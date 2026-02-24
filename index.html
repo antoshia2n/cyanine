@@ -72,29 +72,58 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
   box-shadow:0 0 12px rgba(0,240,212,0.2)}
 
 /* ── LAYOUT ── */
-.app{display:grid;grid-template-columns:54px 1fr;min-height:calc(100vh - 52px)}
-.sidebar{background:rgba(10,17,30,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  border-right:1px solid var(--glass-border);display:flex;flex-direction:column;
-  align-items:center;padding:10px 0 10px;gap:3px;overflow:visible;position:relative;z-index:50}
-.nb{width:38px;height:38px;border:none;background:transparent;border-radius:10px;color:rgba(238,244,255,.32);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;position:relative;flex-shrink:0}
-.nb svg{transition:inherit}
-.nb:hover{background:var(--cd);color:var(--c);box-shadow:0 0 12px rgba(0,232,204,.2)}
-.nb.active{background:linear-gradient(135deg,rgba(0,232,204,.18),rgba(0,200,180,.1));color:var(--c);box-shadow:0 0 16px rgba(0,232,204,.25),inset 0 1px 0 rgba(255,255,255,.06)}
-.nb .tip{position:absolute;left:calc(100% + 10px);background:rgba(12,20,36,0.97);border:1px solid var(--bob);
-  backdrop-filter:blur(16px);padding:5px 11px;border-radius:8px;font-size:11px;color:var(--tx);white-space:nowrap;
-  opacity:0;pointer-events:none;transition:.18s;font-family:var(--fb);z-index:300;
-  box-shadow:0 4px 20px rgba(0,0,0,0.5)}
-.nb:hover .tip{opacity:1;transform:translateX(2px)}
-.nsep{width:22px;height:1px;background:rgba(0,232,204,.1);margin:4px 0;flex-shrink:0}
+.app{display:grid;grid-template-columns:52px 1fr;min-height:calc(100vh - 52px);transition:grid-template-columns .25s cubic-bezier(.4,0,.2,1)}
+.sidebar{
+  background:rgba(10,17,30,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-right:1px solid var(--glass-border);
+  display:flex;flex-direction:column;align-items:flex-start;
+  padding:8px 0;gap:1px;
+  overflow-y:auto;overflow-x:hidden;
+  position:relative;z-index:200;
+  width:52px;
+  transition:width .25s cubic-bezier(.4,0,.2,1),box-shadow .25s;
+  scrollbar-width:none;
+}
+.sidebar::-webkit-scrollbar{display:none}
+.sidebar:hover,.sidebar.expanded{
+  width:200px;
+  box-shadow:4px 0 32px rgba(0,0,0,.5);
+}
+.nb{
+  width:100%;min-height:44px;border:none;background:transparent;border-radius:10px;
+  color:rgba(238,244,255,.38);cursor:pointer;
+  display:flex;flex-direction:row;align-items:center;
+  gap:0;transition:.18s;position:relative;flex-shrink:0;
+  padding:0 7px;overflow:hidden;
+}
+.nb-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nb svg{transition:inherit;flex-shrink:0}
+.nb-label{
+  font-size:12px;font-family:var(--fb);line-height:1.2;
+  white-space:nowrap;overflow:hidden;
+  max-width:0;opacity:0;
+  transition:max-width .25s cubic-bezier(.4,0,.2,1),opacity .2s .05s,padding .25s;
+  padding-left:0;
+}
+.sidebar:hover .nb-label,.sidebar.expanded .nb-label{
+  max-width:140px;opacity:1;padding-left:6px;
+}
+.nb:hover{background:var(--cd);color:var(--c);box-shadow:0 0 10px rgba(0,232,204,.15)}
+.nb.active{
+  background:linear-gradient(90deg,rgba(0,232,204,.18),rgba(0,200,180,.06));
+  color:var(--c);
+  box-shadow:inset 3px 0 0 var(--c);
+}
+.nb .tip{display:none}
+.nsep{width:calc(100% - 16px);height:1px;background:rgba(0,232,204,.09);margin:3px 8px;flex-shrink:0}
 
 /* ── QL SIDEBAR PANEL ── */
 .ql-side-panel{
-  display:none;flex-direction:column;gap:4px;width:38px;overflow:hidden;
+  display:none;flex-direction:column;gap:4px;width:100%;overflow:hidden;padding:0 7px;
 }
 .ql-side-panel.open{display:flex}
 .ql-side-item{
-  width:38px;height:38px;border:none;border-radius:10px;background:transparent;
+  width:100%;height:40px;justify-content:flex-start;padding:0 7px;gap:8px;border:none;border-radius:10px;background:transparent;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
   font-size:15px;color:var(--txm);transition:.18s;position:relative;flex-shrink:0;
   text-decoration:none;
@@ -105,7 +134,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
   opacity:0;pointer-events:none;transition:.18s;font-family:var(--fb);z-index:300;
   box-shadow:0 4px 20px rgba(0,0,0,0.5)}
 .ql-side-item:hover .tip{opacity:1}
-.ql-side-add{color:rgba(238,244,255,.22);border:1px dashed rgba(0,232,204,.2)!important}
+.ql-side-add{color:rgba(238,244,255,.22);border:1px dashed rgba(0,232,204,.2)!important;border-radius:8px;}
+.ql-side-label{font-size:11px;color:var(--txm);white-space:nowrap;overflow:hidden;max-width:0;opacity:0;transition:max-width .25s,opacity .2s .05s;}
+.sidebar:hover .ql-side-label,.sidebar.expanded .ql-side-label{max-width:120px;opacity:1;}
 .ql-side-add:hover{color:var(--c)!important;border-color:var(--c)!important}
 
 /* ── QUICK LINKS POPUP (from sidebar) ── */
@@ -154,23 +185,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
 .canvas.view-mode .panel.view-active{ display:block; grid-column:span 12 !important; animation:fadeUp .3s ease both }
 .canvas.view-mode .panel.view-active-half{ display:block; grid-column:span 6 !important; animation:fadeUp .3s ease both }
 
-/* ── PANEL RESIZE HANDLE ── */
-.panel-resize-handle{
-  position:absolute;bottom:0;right:0;width:18px;height:18px;
-  cursor:nwse-resize;z-index:10;opacity:0;transition:.2s;
-  display:flex;align-items:flex-end;justify-content:flex-end;padding:3px;
-}
-.panel-resize-handle::after{
-  content:'';display:block;width:10px;height:10px;
-  border-right:2px solid var(--c);border-bottom:2px solid var(--c);
-  border-radius:0 0 4px 0;opacity:.5;
-}
-.panel:hover .panel-resize-handle{opacity:1}
-.panel-resize-handle:hover::after,.panel-resize-handle:active::after{opacity:1}
+/* panel-resize-handle CSS removed */
 
 /* ── CANVAS ── */
-.canvas{padding:var(--g);overflow-y:auto;display:grid;grid-template-columns:repeat(12,1fr);
-  grid-auto-rows:auto;gap:var(--g);align-content:start;align-items:start}
+.canvas{padding:14px;overflow-y:auto;display:grid;grid-template-columns:repeat(12,1fr);
+  grid-auto-rows:auto;gap:14px;align-content:start;align-items:start}
 
 /* ── PANEL ── */
 .panel{
@@ -190,8 +209,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
 .panel::after{content:'';position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(135deg,rgba(255,255,255,0.03) 0%,transparent 60%);border-radius:var(--r)}
 .panel:hover{border-color:var(--glass-hover);box-shadow:0 12px 40px rgba(0,0,0,0.5),0 0 0 1px rgba(0,240,212,0.08)}
-.panel.sortable-chosen{box-shadow:0 0 0 2px var(--c),0 12px 40px rgba(0,240,212,.25);border-color:var(--c);z-index:100}
-.panel.sortable-ghost{opacity:.2}
+/* cleaned */
+/* cleaned */
 /* Collapsed panel */
 .panel.collapsed .pb, .panel.collapsed > div:not(.ph) {display:none!important}
 .panel.collapsed {overflow:visible}
@@ -238,7 +257,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
 @keyframes runPulse{0%,100%{box-shadow:0 0 0 0 var(--cg)}50%{box-shadow:0 0 0 5px transparent}}
 
 /* ── MONTHLY GOALS ── */
-.goals-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.goals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
 .goal-card{background:rgba(15,22,35,0.6);border:1px solid var(--glass-border);border-radius:12px;padding:14px;
   display:flex;flex-direction:column;gap:9px;transition:.2s;cursor:pointer;backdrop-filter:blur(8px)}
 .goal-card:hover{border-color:var(--glass-hover);transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
@@ -507,14 +526,15 @@ select.fi{appearance:none;cursor:pointer}
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   /* サイドバー非表示 → ボトムナビに切り替え */
-  .sidebar{display:none}
+  .sidebar{display:none!important}
+  .app{grid-template-columns:1fr!important}
   .app{grid-template-columns:1fr}
   /* 下部ナビ */
   .mobile-nav{display:flex}
 
   .canvas{grid-template-columns:1fr;padding:8px;gap:8px;padding-bottom:72px}
   .s3,.s4,.s5,.s6,.s7,.s8,.s9,.s10,.s11,.s12{grid-column:span 1}
-  .goals-grid{grid-template-columns:repeat(2,1fr)}
+  /* goals-grid dup removed */
   .wl-layout{grid-template-columns:1fr}
   .wl-layout>div:last-child{display:none}
 
@@ -553,7 +573,7 @@ select.fi{appearance:none;cursor:pointer}
   #memoPreview{display:none!important}
   #memoFormatBtn{display:none}
   #memoToolbar{gap:2px;padding:6px 8px}
-  .memo-tool{padding:2px 5px;font-size:9px}
+  /* removed */
 
   /* YouTube */
   #ytPlayer{width:calc(100vw - 16px);right:8px;bottom:70px}
@@ -571,7 +591,7 @@ select.fi{appearance:none;cursor:pointer}
   .proj-item .proj-header{padding:9px 10px}
 }
 @media (max-width: 480px) {
-  .goals-grid{grid-template-columns:1fr}
+  /* goals-grid dup removed */
   .topbar{height:44px}
   .logo{font-size:14px}
 }
@@ -604,12 +624,8 @@ select.fi{appearance:none;cursor:pointer}
   box-shadow:0 8px 32px rgba(0,0,0,0.4),0 0 20px rgba(0,240,212,0.1);animation:toastIn .25s ease}
 @keyframes toastIn{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
 /* ── PANEL RESIZE ── */
-.resize-pick{display:none;gap:3px;align-items:center}
-.rp-btn{padding:1px 5px;border-radius:4px;border:1px solid var(--glass-border);background:transparent;
-  color:var(--txd);font-size:9px;cursor:pointer;font-family:var(--fm);transition:.15s}
-.rp-btn:hover,.rp-btn.active{background:var(--cd);color:var(--c);border-color:var(--c)}
-body.edit-on .resize-pick{display:flex}
-body.edit-on .ph{cursor:grab}
+/* removed */
+
 .dscard{background:rgba(15,22,35,0.6);border:1px solid var(--glass-border);border-radius:9px;padding:9px 12px;backdrop-filter:blur(8px)}
 .dscard-val{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--c);line-height:1}
 .dscard-lbl{font-size:10px;color:var(--txd);margin-top:3px}
@@ -662,18 +678,15 @@ body.edit-on .ph{cursor:grab}
 .yt-no-video-icon{font-size:28px;opacity:.4}
 
 /* ── MEMO ── */
-.memo-page-btn{width:100%;text-align:left;padding:7px 10px;border-radius:7px;border:none;
-  background:transparent;color:var(--txd);font-size:11px;font-family:var(--fb);cursor:pointer;
-  transition:.15s;display:flex;align-items:center;gap:6px;overflow:hidden}
+/* removed */
 .memo-page-btn:hover{background:var(--bg3);color:var(--tx)}
 .memo-page-btn.active{background:var(--cd);color:var(--c);border:1px solid var(--bob)}
 .memo-page-btn .mpn{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .memo-page-btn .mpd{font-size:9px;color:var(--txd);font-family:var(--fm)}
-.memo-page-del{font-size:10px;opacity:0;transition:.15s;background:none;border:none;color:var(--red);cursor:pointer;padding:0 2px}
-.memo-page-btn:hover .memo-page-del{opacity:.7}
+/* removed */
+/* cleaned */
 
-.memo-tool{padding:3px 7px;border-radius:5px;border:1px solid var(--bo);background:transparent;
-  color:var(--txd);font-size:10px;cursor:pointer;transition:.15s;font-family:var(--fb)}
+/* removed */
 .memo-tool:hover{background:var(--cd);color:var(--c);border-color:var(--c)}
 
 /* Memo preview markdown rendering */
@@ -710,9 +723,7 @@ body.edit-on .ph{cursor:grab}
 }
 .task-item:hover .task-drag-handle{opacity:1}
 .task-drag-handle:active{cursor:grabbing;color:var(--c)}
-.task-item.sortable-chosen{box-shadow:0 4px 24px rgba(0,0,0,.5)!important;border-color:var(--c)!important;z-index:50}
-.task-item.sortable-ghost{opacity:.15}
-.sub-list.sortable-chosen, .sub-row.sortable-chosen{opacity:.6}
+/* removed */
 
 /* Task name → clickable to edit */
 .tn{cursor:pointer;transition:color .15s}
@@ -845,43 +856,231 @@ body.edit-on .ph{cursor:grab}
 }
 
 /* ── MEMO FOLDER TREE ── */
-.memo-folder{display:flex;flex-direction:column}
-.memo-folder-head{
-  display:flex;align-items:center;gap:5px;padding:4px 6px;border-radius:7px;
-  cursor:pointer;font-size:11px;color:var(--txm);transition:.15s;
-  font-family:var(--fd);font-weight:700;letter-spacing:.02em;user-select:none;
-}
+/* removed */
+/* removed */
 .memo-folder-head:hover{background:var(--cd);color:var(--tx)}
 .memo-folder-head.active{color:var(--c)}
-.memo-folder-arrow{font-size:9px;color:var(--txd);transition:transform .18s;flex-shrink:0}
-.memo-folder.open>.memo-folder-head>.memo-folder-arrow{transform:rotate(90deg)}
-.memo-folder-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.memo-folder-children{display:none;flex-direction:column;gap:1px;padding-left:12px}
-.memo-folder.open>.memo-folder-children{display:flex}
-.memo-folder-actions{display:none;gap:2px;flex-shrink:0}
-.memo-folder-head:hover .memo-folder-actions{display:flex}
+/* removed */
 .mfa-btn{width:16px;height:16px;border:none;background:transparent;color:var(--txd);
   cursor:pointer;font-size:10px;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:.15s}
 .mfa-btn:hover{background:rgba(255,255,255,.1);color:var(--tx)}
-.memo-page-btn{
-  display:flex;align-items:center;gap:5px;padding:5px 6px;border-radius:7px;
-  cursor:pointer;font-size:11px;color:var(--txm);transition:.15s;background:transparent;
-  border:none;width:100%;text-align:left;
-}
+/* removed */
 .memo-page-btn:hover{background:var(--cd);color:var(--tx)}
 .memo-page-btn.active{background:linear-gradient(90deg,var(--cd),transparent);color:var(--c);font-weight:600}
 .memo-page-btn .mpn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
-.memo-page-del{opacity:0;width:14px;height:14px;border:none;background:transparent;
-  color:var(--txd);cursor:pointer;font-size:10px;padding:0;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;border-radius:3px;transition:.15s}
-.memo-page-btn:hover .memo-page-del{opacity:.7}
+/* removed */
+/* cleaned */
 .memo-page-del:hover{color:var(--red);opacity:1!important;background:var(--redd)}
-.memo-add-page-btn{
-  display:flex;align-items:center;gap:5px;padding:4px 6px;border-radius:6px;
-  cursor:pointer;font-size:10px;color:var(--txd);background:transparent;border:none;
-  width:100%;transition:.15s;border:1px dashed transparent;
-}
+/* removed */
 .memo-add-page-btn:hover{color:var(--c);border-color:rgba(0,232,204,.2);background:var(--cd)}
+
+
+/* ── DATE PICKER ── */
+.datepicker-wrap{position:relative;display:inline-block;width:100%}
+.datepicker-input{
+  background:rgba(15,22,35,.8);border:1px solid var(--glass-border);
+  border-radius:9px;padding:8px 12px;color:var(--tx);font-size:12px;
+  font-family:var(--fb);cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;gap:8px;transition:.18s;width:100%;box-sizing:border-box;
+}
+.datepicker-input:hover,.datepicker-input:focus-within{border-color:var(--c);box-shadow:0 0 0 3px rgba(0,232,204,.1)}
+.datepicker-popup{
+  position:absolute;top:calc(100% + 6px);left:0;z-index:9000;
+  background:rgba(10,18,32,0.98);border:1px solid var(--glass-border);
+  border-radius:14px;padding:14px;min-width:260px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);backdrop-filter:blur(24px);
+  display:none;animation:fadeUp .2s ease;
+}
+.datepicker-popup.open{display:block}
+.dp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.dp-nav{width:26px;height:26px;border:none;background:rgba(255,255,255,.06);
+  border-radius:7px;color:var(--txm);cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;transition:.15s}
+.dp-nav:hover{background:var(--cd);color:var(--c)}
+.dp-month-label{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--tx);cursor:pointer}
+.dp-month-label:hover{color:var(--c)}
+.dp-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px}
+.dp-wd{text-align:center;font-size:9px;font-family:var(--fd);font-weight:700;
+  color:var(--txd);padding:2px 0;letter-spacing:.04em}
+.dp-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.dp-day{
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  font-size:11px;border-radius:7px;cursor:pointer;transition:.15s;
+  border:1px solid transparent;color:var(--txm);
+}
+.dp-day:hover{background:var(--cd);color:var(--c)}
+.dp-day.today{border-color:rgba(0,232,204,.4);color:var(--c);font-weight:700}
+.dp-day.selected{background:var(--c);color:#0b1120;font-weight:800}
+.dp-day.other-month{opacity:.25}
+.dp-day.past{opacity:.35}
+.dp-day.has-event{position:relative}
+.dp-day.has-event::after{content:'';position:absolute;bottom:3px;left:50%;
+  transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--c)}
+.dp-shortcuts{display:flex;gap:5px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bo)}
+.dp-sc{flex:1;padding:5px;border-radius:7px;border:1px solid var(--glass-border);
+  background:transparent;color:var(--txm);font-size:10px;cursor:pointer;text-align:center;transition:.15s}
+.dp-sc:hover{background:var(--cd);color:var(--c);border-color:var(--c)}
+.dp-clear{color:var(--txd);border-style:dashed}
+
+/* ── ALARM WIDGET CSS ── */
+.alarm-list{display:flex;flex-direction:column;gap:6px}
+.alarm-item{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  background:rgba(15,24,40,.6);border:1px solid var(--glass-border);
+  border-radius:11px;transition:.2s;
+}
+.alarm-item:hover{border-color:var(--bob)}
+.alarm-item.active{border-color:rgba(0,232,204,.3);background:rgba(0,232,204,.05)}
+.alarm-item.active .alarm-time{color:var(--c)}
+.alarm-time{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--tx);
+  min-width:72px;letter-spacing:.02em}
+.alarm-meta{flex:1;min-width:0}
+.alarm-label{font-size:12px;color:var(--txm);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.alarm-tags{display:flex;gap:4px;margin-top:2px;flex-wrap:wrap}
+.alarm-tag{font-size:9px;padding:1px 6px;border-radius:4px;font-family:var(--fm);
+  background:rgba(0,232,204,.1);border:1px solid rgba(0,232,204,.2);color:var(--c)}
+.alarm-toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.alarm-toggle input{opacity:0;width:0;height:0;position:absolute}
+.alarm-toggle-slider{
+  position:absolute;inset:0;border-radius:20px;cursor:pointer;transition:.25s;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);
+}
+.alarm-toggle input:checked~.alarm-toggle-slider{background:var(--c);border-color:var(--c)}
+.alarm-toggle-slider::after{
+  content:'';position:absolute;left:2px;top:50%;transform:translateY(-50%);
+  width:14px;height:14px;border-radius:50%;background:#fff;transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.3);
+}
+.alarm-toggle input:checked~.alarm-toggle-slider::after{left:calc(100% - 16px)}
+.alarm-firing{animation:alarmPulse .5s ease infinite alternate}
+@keyframes alarmPulse{from{box-shadow:0 0 0 0 rgba(0,232,204,.5)}to{box-shadow:0 0 0 10px rgba(0,232,204,0)}}
+
+/* col-sel removed */
+
+/* ── CAL EVENT POPUP ── */
+.cal-event-popup{
+  position:fixed;z-index:8000;background:rgba(10,18,32,0.98);
+  border:1px solid var(--glass-border);border-radius:13px;
+  padding:14px 16px;min-width:220px;max-width:300px;
+  box-shadow:0 16px 50px rgba(0,0,0,.6);backdrop-filter:blur(24px);
+  animation:fadeUp .2s ease;
+}
+.cal-event-popup .cep-title{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px}
+.cal-event-popup .cep-row{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:var(--txm);margin:4px 0}
+.cal-event-popup .cep-icon{color:var(--txd);flex-shrink:0;margin-top:1px}
+.cal-event-popup .cep-actions{display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bo)}
+
+
+/* ══ AI SECRETARY ══════════════════════════════ */
+.ai-quick-btn{display:flex;align-items:center;gap:4px;font-size:10px;padding:3px 8px}
+
+.ai-messages{
+  flex:1;overflow-y:auto;padding:10px 12px;
+  display:flex;flex-direction:column;gap:8px;
+  min-height:160px;max-height:300px;
+  scroll-behavior:smooth;
+}
+.ai-messages::-webkit-scrollbar{width:3px}
+.ai-messages::-webkit-scrollbar-thumb{background:var(--bob);border-radius:2px}
+
+.ai-msg{display:flex;gap:7px;align-items:flex-end;animation:fadeUp .22s ease}
+.ai-msg-user{flex-direction:row-reverse}
+
+.ai-avatar{
+  width:24px;height:24px;border-radius:7px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;font-family:var(--fd);letter-spacing:.03em;
+}
+.ai-msg-bot .ai-avatar{
+  background:linear-gradient(135deg,var(--c),rgba(0,200,180,.7));color:#0b1120
+}
+.ai-msg-user .ai-avatar{
+  background:rgba(255,255,255,.07);border:1px solid var(--glass-border);color:var(--txd)
+}
+
+.ai-bubble{
+  max-width:84%;padding:8px 11px;border-radius:11px;
+  font-size:11.5px;line-height:1.75;word-break:break-word;
+}
+.ai-msg-bot .ai-bubble{
+  background:rgba(16,26,44,.92);border:1px solid var(--glass-border);
+  color:var(--txm);border-bottom-left-radius:3px;
+}
+.ai-msg-user .ai-bubble{
+  background:linear-gradient(135deg,rgba(0,232,204,.16),rgba(0,180,160,.1));
+  border:1px solid rgba(0,232,204,.22);color:var(--tx);
+  border-bottom-right-radius:3px;
+}
+.ai-bubble strong,.ai-bubble b{color:var(--tx)}
+.ai-bubble em{color:var(--c);font-style:normal}
+.ai-bubble code{
+  font-family:var(--fm);font-size:10.5px;
+  background:rgba(0,0,0,.35);color:var(--c);
+  padding:1px 5px;border-radius:4px;
+}
+.ai-bubble ul{margin:4px 0;padding-left:14px}
+.ai-bubble li{margin:2px 0;color:var(--txm)}
+.ai-bubble hr{border:none;border-top:1px solid var(--bo);margin:6px 0}
+
+/* thinking dots */
+.ai-dots{display:flex;gap:4px;align-items:center;padding:2px 0}
+.ai-dots span{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--c);opacity:.35;
+  animation:aiDot 1.1s ease infinite;
+}
+.ai-dots span:nth-child(2){animation-delay:.18s}
+.ai-dots span:nth-child(3){animation-delay:.36s}
+@keyframes aiDot{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+
+/* action buttons inside bubble */
+.ai-act-btn{
+  display:inline-flex;align-items:center;gap:5px;margin-top:8px;margin-right:5px;
+  padding:5px 11px;border-radius:8px;font-size:11px;font-family:var(--fb);
+  border:1px solid var(--bob);background:rgba(0,232,204,.07);
+  color:var(--c);cursor:pointer;transition:.15s;
+}
+.ai-act-btn:hover{background:var(--c);color:#0b1120}
+
+/* input area */
+.ai-input-area{
+  flex-shrink:0;
+  border-top:1px solid var(--glass-border);
+  padding:8px 10px;
+  background:rgba(8,14,26,.5);
+}
+.ai-hint-bar{
+  display:flex;align-items:center;gap:7px;padding:6px 10px;margin-bottom:7px;
+  background:rgba(255,208,96,.06);border:1px solid rgba(255,208,96,.18);
+  border-radius:8px;font-size:11px;color:var(--ylw);
+}
+.ai-hint-bar span{flex:1}
+.ai-input-row{display:flex;align-items:flex-end;gap:5px}
+.ai-tool-btn{
+  width:30px;height:30px;flex-shrink:0;border:1px solid var(--glass-border);
+  border-radius:8px;background:transparent;color:var(--txd);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;
+}
+.ai-tool-btn:hover{border-color:var(--c);color:var(--c);background:var(--cd)}
+.ai-tool-btn.rec{background:var(--red);border-color:var(--red);color:#fff;animation:pulse 1s infinite}
+.ai-textarea{
+  flex:1;min-height:30px;max-height:90px;
+  background:rgba(14,22,38,.8);border:1px solid var(--glass-border);
+  border-radius:9px;padding:7px 10px;
+  color:var(--tx);font-size:12px;font-family:var(--fb);
+  resize:none;outline:none;line-height:1.5;overflow-y:auto;transition:.15s;
+}
+.ai-textarea:focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(0,232,204,.08)}
+.ai-textarea::placeholder{color:var(--txd)}
+.ai-send-btn{
+  width:30px;height:30px;flex-shrink:0;border:none;
+  border-radius:8px;background:var(--c);color:#0b1120;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;
+}
+.ai-send-btn:hover{filter:brightness(1.15);box-shadow:0 0 14px rgba(0,232,204,.35)}
+.ai-send-btn:disabled{background:rgba(255,255,255,.08);color:var(--txd);cursor:not-allowed;filter:none;box-shadow:none}
+
+/* email modal */
+.ai-email-modal textarea{font-family:var(--fb);font-size:12px;line-height:1.7;min-height:180px}
 
 </style>
 </head>
@@ -898,7 +1097,6 @@ body.edit-on .ph{cursor:grab}
   <div class="tb-date" id="tbDate"></div>
   <div class="edit-btn" onclick="openSupabaseModal()" id="sbBtn" style="gap:5px;border-color:rgba(0,240,212,.4);color:var(--c)">☁ 同期</div>
   <div class="edit-btn" onclick="openDataModal()" style="gap:5px">💾 データ管理</div>
-  <div class="edit-btn" id="editBtn" onclick="toggleEdit()">⊞ レイアウト編集</div>
   <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txd)"><div class="sdot"></div>オンライン</div>
   <div id="syncDot" title="Supabase未設定" style="display:none;width:7px;height:7px;border-radius:50%;background:var(--txd);box-shadow:0 0 6px currentColor;cursor:pointer" onclick="openSupabaseModal()"></div>
   <div class="avt">CY</div>
@@ -906,26 +1104,28 @@ body.edit-on .ph{cursor:grab}
 
 <div class="app">
   <nav class="sidebar" id="sidebarEl">
-    <button class="nb active" onclick="setView('all',this)" data-view="all"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span class="tip">すべて表示</span></button>
+    <button class="nb active" onclick="setView('all',this)" data-view="all"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span><span class="nb-label">すべて表示</span><span class="tip">すべて表示</span></button>
     <div class="nsep"></div>
-    <button class="nb" onclick="setView('goals',this)" data-view="goals"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="tip">目標</span></button>
-    <button class="nb" onclick="setView('tasks',this)" data-view="tasks"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="tip">タスク</span></button>
-    <button class="nb" onclick="setView('proj',this)" data-view="proj"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="11" rx="1"/><rect x="10" y="3" width="5" height="7" rx="1"/><rect x="17" y="3" width="4" height="14" rx="1"/></svg><span class="tip">プロジェクト</span></button>
-    <button class="nb" onclick="setView('cal',this)" data-view="cal"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg><span class="tip">カレンダー</span></button>
+    <button class="nb" onclick="setView('goals',this)" data-view="goals"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span class="nb-label">目標</span><span class="tip">目標</span></button>
+    <button class="nb" onclick="setView('tasks',this)" data-view="tasks"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="nb-label">タスク</span><span class="tip">タスク</span></button>
+    <button class="nb" onclick="setView('proj',this)" data-view="proj"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="11" rx="1"/><rect x="10" y="3" width="5" height="7" rx="1"/><rect x="17" y="3" width="4" height="14" rx="1"/></svg></span><span class="nb-label">プロジェクト</span><span class="tip">プロジェクト</span></button>
+    <button class="nb" onclick="setView('cal',this)" data-view="cal"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg></span><span class="nb-label">カレンダー</span><span class="tip">カレンダー</span></button>
     <div class="nsep"></div>
-    <button class="nb" onclick="setView('pomo',this)" data-view="pomo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="tip">ポモドーロ</span></button>
-    <button class="nb" onclick="setView('log',this)" data-view="log"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="tip">作業ログ</span></button>
-    <button class="nb" onclick="setView('remind',this)" data-view="remind"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="tip">リマインド</span></button>
-    <button class="nb" onclick="setView('memo',this)" data-view="memo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="tip">メモ</span></button>
-    <button class="nb" onclick="setView('yt',this)" data-view="yt"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg><span class="tip">YouTube</span></button>
+    <button class="nb" onclick="setView('pomo',this)" data-view="pomo"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span class="nb-label">ポモドーロ</span><span class="tip">ポモドーロ</span></button>
+    <button class="nb" onclick="setView('log',this)" data-view="log"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span><span class="nb-label">作業ログ</span><span class="tip">作業ログ</span></button>
+    <button class="nb" onclick="setView('remind',this)" data-view="remind"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span><span class="nb-label">リマインド</span><span class="tip">リマインド</span></button>
     <div class="nsep"></div>
     <!-- QUICK LINKS inline in sidebar -->
-    <button class="nb" id="qlSideBtn" onclick="toggleQLSidebar()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span class="tip">クイックリンク</span></button>
+    <button class="nb" onclick="setView('ai',this)" data-view="ai">
+      <span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 9.05v-.1M16 9.05v-.1M11.5 16a4 4 0 0 0 1 0M9 13c.83 1.5 3.17 1.5 4 0"/></svg></span>
+      <span class="nb-label">AI秘書</span><span class="tip">AI秘書</span>
+    </button>
+        <button class="nb" id="qlSideBtn" onclick="toggleQLSidebar()"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><span class="nb-label">クイックリンク</span><span class="tip">クイックリンク</span></button>
     <div id="qlSidePanel" class="ql-side-panel"></div>
     <div class="nsep" style="margin-top:auto"></div>
-    <button class="nb" onclick="toggleManual()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span class="tip">マニュアル</span></button>
-    <button class="nb" onclick="openDataModal()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span class="tip">データ管理</span></button>
-    <button class="nb" onclick="openSupabaseModal()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg><span class="tip">Supabase設定</span></button>
+    <button class="nb" onclick="toggleManual()"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span class="nb-label">マニュアル</span><span class="tip">マニュアル</span></button>
+    <button class="nb" onclick="openDataModal()"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span><span class="nb-label">データ管理</span><span class="tip">データ管理</span></button>
+    <button class="nb" onclick="openSupabaseModal()"><span class="nb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></span><span class="nb-label">Supabase設定</span><span class="tip">Supabase設定</span></button>
   </nav>
 
   <!-- QUICK LINKS POPUP -->
@@ -981,18 +1181,19 @@ body.edit-on .ph{cursor:grab}
 
       <div class="manual-h2">📐 レイアウト</div>
       <div class="manual-item"><div class="manual-key">パネル角</div>右下角をドラッグしてパネルの高さを自由に変更</div>
-      <div class="manual-item"><div class="manual-key">⊞ 編集</div>トップバーの「レイアウト編集」でパネルを並び替え・サイズ変更</div>
+      <div class="manual-item"><div class="manual-key">▼ ボタン</div>パネル右上の▼でパネルを折りたたむ / ▼で再展開</div>
     </div>
   </div>
 
   <main class="canvas" id="canvas">
 
-    <!-- ① MONTHLY GOALS -->
+    <!-- ROW 1: 目標（全幅） -->
     <div class="panel s12" id="panel-goals">
       <div class="ph">
         <div class="pht">今月の目標 & フォーカス</div>
         <div class="phd">⠿</div>
         <div class="pha">
+          <div class="col-sel-bar" style="height:4px"></div><div class="col-sel-bar" style="height:4px"></div>
           <button class="btn btn-sm" onclick="openGoalModal()">＋ 目標追加</button>
           <button class="ph-collapse" onclick="togglePanel('panel-goals')" title="折りたたむ">▼</button>
         </div>
@@ -1007,7 +1208,7 @@ body.edit-on .ph{cursor:grab}
       </div>
     </div>
 
-    <!-- ② POMODORO -->
+    <!-- ROW 2: ポモドーロ + タスク -->
     <div class="panel s4" id="panel-pomo">
       <div class="ph">
         <div class="pht">ポモドーロタイマー</div>
@@ -1045,17 +1246,123 @@ body.edit-on .ph{cursor:grab}
       </div>
     </div>
 
-    <!-- ③ CALENDAR -->
-    <div class="panel s8" id="panel-cal">
+    <div class="panel s8" id="panel-tasks">
+      <div class="ph">
+        <div class="pht">タスク</div>
+        <div class="phd">⠿</div>
+        <div class="pha">
+          <button class="btn btn-sm btn-p" onclick="openTaskModal()">＋ 追加</button>
+          <button class="ph-collapse" onclick="togglePanel('panel-tasks')" title="折りたたむ">▼</button>
+        </div>
+      </div>
+      <div class="pb">
+        <div class="quick-bar">
+          <input class="qi" id="qti" placeholder="タスクを素早く追加… (Enter)" onkeydown="if(event.key==='Enter')quickAdd()">
+          <button class="btn btn-p btn-sm" onclick="quickAdd()">追加</button>
+        </div>
+        <div class="task-filter-tabs">
+          <button class="ftab active" onclick="setTaskFilter('today',this)">今日 <span class="task-count" id="todayCnt">0</span></button>
+          <button class="ftab" onclick="setTaskFilter('week',this)">今週 <span class="task-count" id="weekCnt">0</span></button>
+          <button class="ftab" onclick="setTaskFilter('all',this)">すべて <span class="task-count" id="allCnt">0</span></button>
+        </div>
+        <div class="task-list" id="taskList"></div>
+      </div>
+    </div>
+
+    <!-- ROW 3: プロジェクト + AI秘書 -->
+    <div class="panel s6" id="panel-proj">
+      <div class="ph">
+        <div class="pht">プロジェクト管理</div>
+        <div class="phd">⠿</div>
+        <div class="pha">
+          <button class="btn btn-sm btn-p" onclick="openProjModal()">＋</button>
+          <button class="ph-collapse" onclick="togglePanel('panel-proj')" title="折りたたむ">▼</button>
+        </div>
+      </div>
+      <div class="pb">
+        <div class="proj-tabs">
+          <button class="ptab active" onclick="switchProj('list',this)">プロジェクト</button>
+          <button class="ptab" onclick="switchProj('board',this)">ボード</button>
+          <button class="ptab" onclick="switchProj('gantt',this)">ガント</button>
+        </div>
+        <div id="projListView" class="proj-list-view"></div>
+        <div id="projBoardView" class="board-view" style="display:none;grid-template-columns:1fr 1fr 1fr;gap:9px;padding-top:11px"></div>
+        <div id="projGanttView" class="gantt-wrap" style="display:none">
+          <div class="gantt-hint">💡 プロジェクト名やバーをクリックすると詳細が開きます</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel s6" id="panel-ai" style="display:flex;flex-direction:column;min-height:320px">
+      <div class="ph" style="flex-shrink:0">
+        <div class="phi">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 9.05v-.1M16 9.05v-.1M11.5 16a4 4 0 0 0 1 0M9 13c.83 1.5 3.17 1.5 4 0"/>
+          </svg>
+        </div>
+        <div class="pht" id="aiPanelTitle">AI秘書</div>
+        <div id="aiStatusDot" style="width:7px;height:7px;border-radius:50%;background:var(--txd);margin-left:4px;transition:.3s;flex-shrink:0" title="APIキー未設定"></div>
+        <div class="phd">⠿</div>
+        <div class="pha" style="gap:4px">
+          <button class="btn btn-sm ai-quick-btn" onclick="aiQuick('overdue')" title="期限切れタスクを確認">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            期限
+          </button>
+          <button class="btn btn-sm ai-quick-btn" onclick="aiQuick('report')" title="週次レポート生成">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            レポート
+          </button>
+          <button class="btn btn-sm ai-quick-btn" onclick="aiQuick('today')" title="今日のアドバイス">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+            今日
+          </button>
+          <button class="btn btn-sm" onclick="openAiSettings()" style="padding:4px 7px" title="AI設定">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+          <button class="ph-collapse" onclick="togglePanel('panel-ai')">▼</button>
+        </div>
+      </div>
+      <!-- Chat messages area -->
+      <div class="ai-messages" id="aiMessages"></div>
+      <!-- Input area -->
+      <div class="ai-input-area">
+        <div class="ai-hint-bar" id="aiHintBar">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Claude APIキーを設定してください</span>
+          <button class="btn btn-sm" style="padding:2px 8px;font-size:10px" onclick="openAiSettings()">設定する</button>
+        </div>
+        <div class="ai-input-row">
+          <button class="ai-tool-btn" id="aiVoiceBtn" onclick="aiToggleVoice()" title="音声入力">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+          </button>
+          <textarea class="ai-textarea" id="aiInput"
+            placeholder="メッセージを入力… (Enterで送信)"
+            onkeydown="aiKeydown(event)" oninput="aiResize(this)"></textarea>
+          <button class="ai-send-btn" id="aiSendBtn" onclick="aiSend()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 4: カレンダー -->
+    <div class="panel s12" id="panel-cal">
       <div class="ph">
         <div class="pht">Google カレンダー</div>
         <div class="phd">⠿</div>
         <div class="pha" id="calHeaderActions">
-          <button class="btn btn-sm" id="calPrevBtn" onclick="calNavigate(-1)" style="display:none">‹ 前週</button>
+          <button class="btn btn-sm" id="calPrevBtn" onclick="calNavigate(-1)" style="display:none">‹</button>
           <span class="btn btn-sm" id="calWeekLabel" style="cursor:default;border:none;opacity:.7;display:none"></span>
-          <button class="btn btn-sm" id="calNextBtn" onclick="calNavigate(1)" style="display:none">次週 ›</button>
+          <button class="btn btn-sm" id="calNextBtn" onclick="calNavigate(1)" style="display:none">›</button>
           <button class="btn btn-sm" id="calTodayBtn" onclick="calGoToday()" style="display:none">今日</button>
-          <a class="btn btn-sm" href="https://calendar.google.com" target="_blank">🔗 開く</a>
+          <div style="display:flex;gap:2px;border:1px solid var(--glass-border);border-radius:7px;overflow:hidden" id="calViewToggle" style="display:none">
+            <button class="btn btn-sm active" id="calWeekBtn" onclick="setCalViewMode('week')" style="border:none;border-radius:0">週</button>
+            <button class="btn btn-sm" id="calDayBtn" onclick="setCalViewMode('day')" style="border:none;border-radius:0">日</button>
+          </div>
+          <a class="btn btn-sm" href="https://calendar.google.com" target="_blank" style="display:none" id="calOpenBtn">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> 開く
+          </a>
           <button class="btn btn-sm" id="calLogoutBtn" onclick="calLogout()" style="display:none;color:var(--txd)">ログアウト</button>
           <button class="ph-collapse" onclick="togglePanel('panel-cal')" title="折りたたむ">▼</button>
         </div>
@@ -1091,63 +1398,57 @@ body.edit-on .ph{cursor:grab}
       </div>
     </div>
 
-    <!-- ④ FOCUS TASKS (Today / This Week) -->
-    <div class="panel s5" id="panel-tasks">
+    <!-- BOTTOM: アラーム + リマインド + 作業ログ -->
+    <div class="panel s4" id="panel-alarm">
       <div class="ph">
-        <div class="pht">タスク</div>
+        <div class="phi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><polyline points="12 9 12 13 14 15"/><line x1="5" y1="3" x2="2.27" y2="5.27"/><line x1="19" y1="3" x2="21.73" y2="5.27"/></svg></div>
+        <div class="pht">アラーム</div>
         <div class="phd">⠿</div>
         <div class="pha">
-          <button class="btn btn-sm btn-p" onclick="openTaskModal()">＋ 追加</button>
-          <button class="ph-collapse" onclick="togglePanel('panel-tasks')" title="折りたたむ">▼</button>
+          <button class="btn btn-sm" onclick="openAlarmModal()">＋ 追加</button>
+          <button class="ph-collapse" onclick="togglePanel('panel-alarm')" title="折りたたむ">▼</button>
         </div>
       </div>
-      <div class="pb">
-        <div class="quick-bar">
-          <input class="qi" id="qti" placeholder="タスクを素早く追加… (Enter)" onkeydown="if(event.key==='Enter')quickAdd()">
-          <button class="btn btn-p btn-sm" onclick="quickAdd()">追加</button>
-        </div>
-        <div class="task-filter-tabs">
-          <button class="ftab active" onclick="setTaskFilter('today',this)">今日 <span class="task-count" id="todayCnt">0</span></button>
-          <button class="ftab" onclick="setTaskFilter('week',this)">今週 <span class="task-count" id="weekCnt">0</span></button>
-          <button class="ftab" onclick="setTaskFilter('all',this)">すべて <span class="task-count" id="allCnt">0</span></button>
-        </div>
-        <div class="task-list" id="taskList"></div>
-      </div>
-    </div>
-
-    <!-- ⑤ PROJECTS -->
-    <div class="panel s7" id="panel-proj">
-      <div class="ph">
-        <div class="pht">プロジェクト管理</div>
-        <div class="phd">⠿</div>
-        <div class="pha">
-          <button class="btn btn-sm btn-p" onclick="openProjModal()">＋</button>
-          <button class="ph-collapse" onclick="togglePanel('panel-proj')" title="折りたたむ">▼</button>
-        </div>
-      </div>
-      <div class="pb">
-        <div class="proj-tabs">
-          <button class="ptab active" onclick="switchProj('list',this)">プロジェクト</button>
-          <button class="ptab" onclick="switchProj('board',this)">ボード</button>
-          <button class="ptab" onclick="switchProj('gantt',this)">ガント</button>
-        </div>
-        <div id="projListView" class="proj-list-view"></div>
-        <div id="projBoardView" class="board-view" style="display:none;grid-template-columns:1fr 1fr 1fr;gap:9px;padding-top:11px"></div>
-        <div id="projGanttView" class="gantt-wrap" style="display:none">
-          <div class="gantt-hint">💡 プロジェクト名やバーをクリックすると詳細が開きます</div>
+      <div class="pb" style="padding:10px 12px" id="alarmListWrap">
+        <div class="alarm-list" id="alarmList"></div>
+        <div id="alarmEmpty" style="text-align:center;padding:20px;color:var(--txd);font-size:12px;display:none">
+          アラームがありません
         </div>
       </div>
     </div>
 
-    <!-- ⑥ WORK LOG -->
-    <div class="panel s8" id="panel-log">
+    <div class="panel s4" id="panel-remind">
+      <div class="ph">
+        <div class="phi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <div class="pht">リマインド</div>
+        <div class="phd">⠿</div>
+        <div class="pha">
+          <button class="btn btn-sm btn-p" onclick="openRemindModal()">＋ 追加</button>
+          <button class="ph-collapse" onclick="togglePanel('panel-remind')" title="折りたたむ">▼</button>
+        </div>
+      </div>
+      <div class="pb">
+        <div class="remind-tabs">
+          <button class="rtab active" onclick="setRemindTab('habit',this)">🔄 習慣 <span class="task-count" id="habitCnt">0</span></button>
+          <button class="rtab" onclick="setRemindTab('urgent',this)">⚡ 緊急雑務 <span class="task-count" id="urgentCnt">0</span></button>
+          <button class="rtab" onclick="setRemindTab('all',this)">すべて</button>
+        </div>
+        <div class="remind-list" id="remindList"></div>
+        <div class="remind-quick">
+          <input class="qi" id="remindQuickInp" placeholder="素早く追加… (Enter)" onkeydown="if(event.key==='Enter')quickAddRemind()">
+          <button class="btn btn-p btn-sm" onclick="quickAddRemind()">追加</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel s4" id="panel-log" data-collapsed="true">
       <div class="ph">
         <div class="pht">作業ログ — 本日の可視化</div>
         <div class="phd">⠿</div>
         <div class="pha">
           <button class="btn btn-sm" onclick="openLogAddModal()">＋ 追加</button>
           <button class="btn btn-sm" onclick="toast('週間レポートを生成中…')">週間</button>
-          <button class="ph-collapse" onclick="togglePanel('panel-log')" title="折りたたむ">▼</button>
+          <button class="ph-collapse" onclick="togglePanel('panel-log')" title="展開">▲</button>
         </div>
       </div>
       <div class="pb">
@@ -1176,112 +1477,7 @@ body.edit-on .ph{cursor:grab}
       </div>
     </div>
 
-    <!-- ⑦ QUICK LINKS (moved to sidebar - qlGrid hidden for compat) -->
     <div id="qlGrid" style="display:none"></div>
-
-    <!-- ⑧ MEMO -->
-    <div class="panel s12" id="panel-memo">
-      <div class="ph">
-        <div class="pht">メモ</div>
-        <div class="phd">⠿</div>
-        <div class="pha">
-          <button class="btn btn-sm" id="memoFormatBtn" onclick="toggleMemoFormat()" title="プレビュー切替">プレビュー</button>
-          <button class="btn btn-sm" onclick="addMemoFolder()" title="フォルダ追加">📁 フォルダ</button>
-          <button class="btn btn-sm" onclick="addMemoPage(null)" title="ページ追加">＋ ページ</button>
-          <button class="btn btn-sm btn-p" onclick="saveMemo()">保存</button>
-          <button class="ph-collapse" onclick="togglePanel('panel-memo')" title="折りたたむ">▼</button>
-        </div>
-      </div>
-      <div class="pb" style="padding:0">
-        <div style="display:grid;grid-template-columns:210px 1fr;min-height:360px">
-          <!-- Sidebar: folder tree -->
-          <div style="border-right:1px solid var(--bo);padding:8px 6px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;max-height:480px" id="memoPageList"></div>
-          <!-- Editor + Preview -->
-          <div style="display:flex;flex-direction:column;overflow:hidden">
-            <!-- Toolbar -->
-            <div id="memoToolbar" style="display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--bo);flex-wrap:wrap;align-items:center">
-              <button class="memo-tool" onclick="memoInsert('# ','')">H1</button>
-              <button class="memo-tool" onclick="memoInsert('## ','')">H2</button>
-              <button class="memo-tool" onclick="memoInsert('### ','')">H3</button>
-              <div style="width:1px;height:16px;background:var(--bo);margin:0 2px"></div>
-              <button class="memo-tool" onclick="memoInsert('- ','')">•</button>
-              <button class="memo-tool" onclick="memoInsert('  - ','')">•• 字下げ</button>
-              <button class="memo-tool" onclick="memoInsert('    - ','')">••• 深い</button>
-              <div style="width:1px;height:16px;background:var(--bo);margin:0 2px"></div>
-              <button class="memo-tool" onclick="memoInsert('1. ','')">1.</button>
-              <button class="memo-tool" onclick="memoInsert('- [ ] ','')">☐ チェック</button>
-              <div style="width:1px;height:16px;background:var(--bo);margin:0 2px"></div>
-              <button class="memo-tool" onclick="memoWrap('**','**')"><b>B</b></button>
-              <button class="memo-tool" onclick="memoWrap('*','*')"><i>I</i></button>
-              <button class="memo-tool" onclick="memoWrap('`','`')" style="font-family:var(--fm)">Code</button>
-              <button class="memo-tool" onclick="memoInsert('> ','')">❝ 引用</button>
-              <button class="memo-tool" onclick="memoInsert('---\n','')">─ 区切り</button>
-              <div style="flex:1"></div>
-              <span style="font-size:10px;color:var(--txd);font-family:var(--fm)" id="memoCharCount">0文字</span>
-            </div>
-            <!-- Split: editor left, preview right in preview mode; or full editor -->
-            <div id="memoEditorWrap" style="display:grid;grid-template-columns:1fr;flex:1;overflow:hidden">
-              <textarea id="memoEditor"
-                style="background:transparent;border:none;color:var(--tx);font-family:var(--fm);font-size:12px;line-height:1.75;padding:14px 16px;outline:none;resize:none;min-height:260px;tab-size:2;overflow-y:auto"
-                placeholder="# タイトル&#10;&#10;## セクション&#10;- 箇条書き&#10;  - 字下げ&#10;    - さらに深い&#10;&#10;1. 番号付きリスト&#10;&#10;- [ ] チェックボックス&#10;- [x] 完了したタスク&#10;&#10;> 引用文&#10;&#10;**太字** / *斜体* / `コード`&#10;&#10;---"
-                oninput="onMemoInput()"
-                onkeydown="onMemoKeyDown(event)"></textarea>
-              <div id="memoPreview" style="display:none;padding:14px 18px;overflow-y:auto;font-size:13px;line-height:1.8;color:var(--txm);border-left:1px solid var(--bo)"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ⑩ YOUTUBE PANEL -->
-    <div class="panel s7" id="panel-yt" style="min-height:320px">
-      <div class="ph">
-        <div class="phi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-        <div class="pht">YouTube</div>
-        <div class="phd">⠿</div>
-        <div class="pha">
-          <button class="ph-collapse" onclick="togglePanel('panel-yt')" title="折りたたむ">▼</button>
-        </div>
-      </div>
-      <div class="pb" style="padding:0;display:flex;flex-direction:column">
-        <div style="display:flex;gap:6px;padding:10px 14px;background:rgba(0,0,0,.2);border-bottom:1px solid var(--glass-border)">
-          <input class="yt-url-input" id="ytPanelUrl" placeholder="YouTube URL または動画ID を入力…" style="flex:1;background:rgba(15,22,35,.8);border:1px solid var(--glass-border);border-radius:8px;padding:7px 10px;color:var(--tx);font-size:11px;font-family:var(--fb);outline:none;transition:.2s" onkeydown="if(event.key==='Enter')loadYtPanel()" onfocus="this.style.borderColor='var(--c)'" onblur="this.style.borderColor='var(--glass-border)'">
-          <button class="btn btn-p btn-sm" onclick="loadYtPanel()">▶ 再生</button>
-        </div>
-        <div id="ytPanelEmbed" style="flex:1;display:flex;align-items:center;justify-content:center;min-height:240px">
-          <div style="text-align:center;color:var(--txd)">
-            <div style="font-size:40px;margin-bottom:10px;opacity:.3">▶</div>
-            <div style="font-size:12px">URLを入力して再生</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ⑨ REMIND PANEL -->
-    <div class="panel s4" id="panel-remind">
-      <div class="ph">
-        <div class="phi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-        <div class="pht">リマインド</div>
-        <div class="phd">⠿</div>
-        <div class="pha">
-          <button class="btn btn-sm btn-p" onclick="openRemindModal()">＋ 追加</button>
-          <button class="ph-collapse" onclick="togglePanel('panel-remind')" title="折りたたむ">▼</button>
-        </div>
-      </div>
-      <div class="pb">
-        <div class="remind-tabs">
-          <button class="rtab active" onclick="setRemindTab('habit',this)">🔄 習慣 <span class="task-count" id="habitCnt">0</span></button>
-          <button class="rtab" onclick="setRemindTab('urgent',this)">⚡ 緊急雑務 <span class="task-count" id="urgentCnt">0</span></button>
-          <button class="rtab" onclick="setRemindTab('all',this)">すべて</button>
-        </div>
-        <div class="remind-list" id="remindList"></div>
-        <div class="remind-quick">
-          <input class="qi" id="remindQuickInp" placeholder="素早く追加… (Enter)" onkeydown="if(event.key==='Enter')quickAddRemind()">
-          <button class="btn btn-p btn-sm" onclick="quickAddRemind()">追加</button>
-        </div>
-      </div>
-    </div>
 
   </main>
 </div>
@@ -1309,7 +1505,15 @@ body.edit-on .ph{cursor:grab}
     <div class="fl"><label class="flb">優先度</label><div class="tag-p" id="tmPriority"></div></div>
     <div class="fl2">
       <div><label class="flb">開始日</label><input class="fi" type="date" id="tmStart"></div>
-      <div><label class="flb">締切日</label><input class="fi" type="date" id="tmDeadline"></div>
+      <div><label class="flb">締切日</label>
+        <div class="datepicker-wrap">
+          <div class="datepicker-input" id="tmDeadlineTrigger" onclick="openDatePicker('tmDeadlineVal',this)" tabindex="0">
+            <span id="tmDeadlineDisplay" style="color:var(--txd)">日付を選択</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+          </div>
+          <input type="hidden" id="tmDeadlineVal">
+        </div>
+      </div>
     </div>
     <div class="fl2">
       <div><label class="flb">期間（時間）</label><input class="fi" type="number" id="tmDuration" min=".5" step=".5" placeholder="例: 8"></div>
@@ -1329,7 +1533,13 @@ body.edit-on .ph{cursor:grab}
       </div>
       <div>
         <label class="flb">くり返し終了日</label>
-        <input class="fi" type="date" id="tmRepeatEnd" placeholder="未指定で無期限">
+        <div class="datepicker-wrap">
+          <div class="datepicker-input" id="tmRepeatEndTrigger" onclick="openDatePicker('tmRepeatEnd',this)" style="font-size:11px">
+            <span id="tmRepeatEndDisplay" style="color:var(--txd)">未指定で無期限</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+          </div>
+          <input type="hidden" id="tmRepeatEnd">
+        </div>
       </div>
     </div>
     <div class="fl"><label class="flb">メモ</label><input class="fi" id="tmNote" placeholder="補足…"></div>
@@ -1797,8 +2007,7 @@ function renderAll() {
   try { renderProjList(); } catch(e){}
   try { renderQL(); } catch(e){}
   try { renderReminds(); } catch(e){}
-  try { loadLayout(); } catch(e){}
-  try { loadPanelCollapse(); } catch(e){}
+    try { loadPanelCollapse(); } catch(e){}
 
   // silent load
 }
@@ -1833,56 +2042,16 @@ initLogo();
 // ══════════════════════════════════════════
 // DRAG LAYOUT
 // ══════════════════════════════════════════
-let editMode = false;
-const sortable = Sortable.create($('canvas'), {
-  animation:200, handle:'.ph', draggable:'.panel',
-  ghostClass:'sortable-ghost', chosenClass:'sortable-chosen', disabled:true,
-  onEnd(){ toast('レイアウト保存 💾'); ls.set('cy3_layout', [...document.querySelectorAll('.panel')].map(p=>p.id)); }
-});
-function toggleEdit() {
-  editMode = !editMode;
-  sortable.option('disabled', !editMode);
-  const btn = $('editBtn');
-  btn.classList.toggle('on', editMode);
-  btn.textContent = editMode ? '✓ 編集完了' : '⊞ レイアウト編集';
-  document.body.classList.toggle('edit-on', editMode);
-  if(editMode) injectResizePickers();
-  toast(editMode ? '🔓 ドラッグで並び替え・幅変更できます' : '✅ レイアウトを保存しました');
-}
+let editMode = false; // unused
 
 const SIZES = [{label:'S',col:'s4'},{label:'M',col:'s6'},{label:'L',col:'s8'},{label:'XL',col:'s12'}];
 const SIZE_LABELS = {s3:'S',s4:'S',s5:'M',s6:'M',s7:'L',s8:'L',s9:'L',s10:'XL',s11:'XL',s12:'XL'};
 
-function injectResizePickers() {
-  document.querySelectorAll('.panel').forEach(panel => {
-    if(panel.querySelector('.resize-pick')) return; // already injected
-    const ph = panel.querySelector('.ph'); if(!ph) return;
-    const phd = ph.querySelector('.phd');
-    // current size
-    const curCls = [...panel.classList].find(c=>/^s\d+$/.test(c)) || 's6';
-    const pick = document.createElement('div');
-    pick.className = 'resize-pick';
-    pick.innerHTML = SIZES.map(s=>
-      `<button class="rp-btn ${SIZE_LABELS[curCls]===s.label?'active':''}" onclick="resizePanel(this,'${s.col}')">${s.label}</button>`
-    ).join('');
-    phd.insertAdjacentElement('afterend', pick);
-  });
-}
+function injectResizePickers(){}// removed
 
-function resizePanel(btn, newCls) {
-  const panel = btn.closest('.panel');
-  panel.classList.remove('s3','s4','s5','s6','s7','s8','s9','s10','s11','s12');
-  panel.classList.add(newCls);
-  btn.closest('.resize-pick').querySelectorAll('.rp-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  // save sizes
-  const sizes = {};
-  document.querySelectorAll('.panel').forEach(p=>{
-    const sc = [...p.classList].find(c=>/^s\d+$/.test(c));
-    if(sc) sizes[p.id] = sc;
-  });
-  ls.set('cy3_sizes', sizes);
-}
+
+function resizePanel(){}// removed
+
 function loadLayout() {
   const order = ls.get('cy3_layout');
   if(order) {
@@ -2660,7 +2829,17 @@ function openTaskModal(id=null) {
   $('tmDelBtn').style.display = id?'inline-flex':'none';
   const t = id?tasks.find(x=>x.id===id):null;
   $('tmName').value=t?.name||''; $('tmStart').value=t?.start||todayStr();
-  $('tmDeadline').value=t?.deadline||todayStr();
+  const dlVal = t?.deadline||'';
+if($('tmDeadlineVal')) $('tmDeadlineVal').value = dlVal;
+const dlDisp = $('tmDeadlineDisplay');
+if(dlDisp) {
+  if(dlVal) {
+    const [y,m,d2] = dlVal.split('-').map(Number);
+    const wds=['日','月','火','水','木','金','土'];
+    dlDisp.textContent = y+'年'+m+'月'+d2+'日（'+wds[new Date(y,m-1,d2).getDay()]+'）';
+    dlDisp.style.color='var(--tx)';
+  } else { dlDisp.textContent='日付を選択'; dlDisp.style.color='var(--txd)'; }
+}
   $('tmDuration').value=t?.duration||''; $('tmNote').value=t?.note||'';
   $('tmRepeat').value=t?.repeat||'';
   $('tmRepeatEnd').value=t?.repeatEnd||'';
@@ -2690,7 +2869,7 @@ function saveTask(){
   const subtasks=[...$('tmSubs').querySelectorAll('input')].map(i=>({n:i.value.trim(),done:false})).filter(s=>s.n);
   const repeat=$('tmRepeat').value;
   const repeatEnd=$('tmRepeatEnd').value;
-  const data={name,priority:priKey,tag:priKey==='high'?'red':priKey==='mid'?'yellow':'cyan',start:$('tmStart').value,deadline:$('tmDeadline').value,duration:parseFloat($('tmDuration').value)||2,projectId:$('tmProject').value,note:$('tmNote').value,subtasks,repeat,repeatEnd};
+  const data={name,priority:priKey,tag:priKey==='high'?'red':priKey==='mid'?'yellow':'cyan',start:$('tmStart').value,deadline:$('tmDeadlineVal').value||$('tmDeadline')?.value||'',duration:parseFloat($('tmDuration').value)||2,projectId:$('tmProject').value,note:$('tmNote').value,subtasks,repeat,repeatEnd};
   if(editingTaskId){
     const t=tasks.find(x=>x.id===editingTaskId);
     if(t) Object.assign(t,data);
@@ -2962,10 +3141,12 @@ function calRenderWeek(mon) {
   const timed   = calEvents.filter(e =>  e.start.dateTime);
 
   // 表示する時間範囲（7:00 〜 23:00 = 16時間、44px/h）
+  // 表示モード: week / day
+  const calViewMode = window._calViewMode || 'week';
   const HOUR_START = 7;
-  const HOUR_END   = 23;
+  const HOUR_END   = 21;   // 7:00〜21:00 = 14h (スクロールで7:00〜20:00を表示)
   const HOURS      = HOUR_END - HOUR_START;
-  const PX_PER_H   = 48;
+  const PX_PER_H   = 52;
   const GRID_H     = HOURS * PX_PER_H;
 
   let html = '';
@@ -3228,18 +3409,10 @@ let memoPages = ls.get('cy3_memo') || [
   {id:'m1', title:'作業メモ', content:'# 作業メモ\n\n## 今日やること\n- [ ] 朝会の準備\n- [ ] APIレビュー\n  - エンドポイント確認\n  - レート制限の検討\n- [x] 週報送付\n\n## アイデア\n- ダッシュボードの改善案\n  - ポモドーロ統計の可視化\n  - Slack通知連携\n\n---\n\n> **メモ**: `Tab` キーで字下げ、`Shift+Tab` で戻す\n'},
   {id:'m2', title:'アイデアノート', content:'# アイデアノート\n\n## Q1 施策\n1. SNS投稿の頻度アップ\n2. メールマガジンのリニューアル\n3. LPのA/Bテスト\n\n## ブレスト\n- ターゲット再定義\n  - 30代フリーランス\n  - スタートアップ創業期\n\n**重要**: 来週の会議で共有する\n'},
 ];
-let nextMemoId = 3;
-let activeMemoId = memoPages[0]?.id || null;
 let memoPreviewMode = false;
 
-function renderMemoPageList() {
-  $('memoPageList').innerHTML = memoPages.map(p => `
-    <button class="memo-page-btn ${p.id===activeMemoId?'active':''}" onclick="switchMemoPage('${p.id}')">
-      <span class="mpn">${p.title||'無題'}</span>
-      <button class="memo-page-del" onclick="event.stopPropagation();deleteMemoPage('${p.id}')" title="削除">✕</button>
-    </button>
-  `).join('') + `<button class="memo-page-btn" onclick="addMemoPage()" style="opacity:.5;border-style:dashed;border:1px dashed var(--bo);margin-top:4px">＋ ページ追加</button>`;
-}
+// renderMemoPageList removed
+
 
 function switchMemoPage(id) {
   // save current before switching
@@ -3249,13 +3422,8 @@ function switchMemoPage(id) {
   renderMemoPageList();
 }
 
-function loadActiveMemo() {
-  const p = memoPages.find(x=>x.id===activeMemoId);
-  if(!p) return;
-  $('memoEditor').value = p.content || '';
-  updateMemoCount();
-  if(memoPreviewMode) renderMemoPreview();
-}
+// loadActiveMemo removed
+
 
 function saveCurrentMemoContent() {
   const p = memoPages.find(x=>x.id===activeMemoId);
@@ -3274,24 +3442,11 @@ function saveMemo() {
   toast('メモを保存しました 📝');
 }
 
-function addMemoPage() {
-  saveCurrentMemoContent();
-  const id = 'm'+Date.now();
-  memoPages.push({id, title:'新しいページ', content:''});
-  activeMemoId = id;
-  loadActiveMemo();
-  renderMemoPageList();
-  $('memoEditor').focus();
-}
+function addMemoPage(){}// removed
 
-function deleteMemoPage(id) {
-  if(memoPages.length<=1) { toast('最後のページは削除できません'); return; }
-  memoPages = memoPages.filter(x=>x.id!==id);
-  if(activeMemoId===id) activeMemoId = memoPages[0].id;
-  ls.set('cy3_memo', memoPages);
-  loadActiveMemo(); renderMemoPageList();
-  toast('ページを削除しました');
-}
+
+function deleteMemoPage(){}// removed
+
 
 function onMemoInput() {
   updateMemoCount();
@@ -3512,12 +3667,6 @@ function parseMemo(md) {
   return html;
 }
 
-function initMemo() {
-  const saved = ls.get('cy3_memo');
-  if(saved && saved.length) { memoPages = saved; activeMemoId = saved[0].id; }
-  renderMemoPageList();
-  loadActiveMemo();
-}
 
 // ══════════════════════════════════════════
 // DATA MANAGEMENT
@@ -3528,11 +3677,9 @@ const DATA_KEYS = {
   tasks:      { key:'cy3_tasks',     label:'タスク',           icon:'✅', color:'var(--c)' },
   projects:   { key:'cy3_projects',  label:'プロジェクト',     icon:'📊', color:'var(--ylw)' },
   goals:      { key:'cy3_goals',     label:'目標',             icon:'🎯', color:'var(--grn)' },
-  memo:       { key:'cy3_memo',      label:'メモ',             icon:'📝', color:'var(--pur)' },
   qlinks:     { key:'cy3_qlinks',    label:'クイックリンク',   icon:'🔗', color:'var(--org)' },
   focusNote:  { key:'cy3_focusNote', label:'フォーカスメモ',   icon:'💡', color:'var(--c)' },
   cal:        { key:'cy3_cal',       label:'カレンダーID',     icon:'📅', color:'var(--txd)' },
-  layout:     { key:'cy3_layout',    label:'レイアウト',       icon:'⊞',  color:'var(--txd)' },
   logoText:   { key:'cy3_logoText',  label:'ロゴ名',           icon:'🏷',  color:'var(--txd)' },
 };
 
@@ -3574,7 +3721,6 @@ function buildDataSummary() {
     { label:'タスク',       val: tasks.length,        icon:'✅', color:'var(--c)' },
     { label:'プロジェクト', val: projects.length,     icon:'📊', color:'var(--ylw)' },
     { label:'目標',         val: goals.length,        icon:'🎯', color:'var(--grn)' },
-    { label:'メモページ',   val: memoPages.length,    icon:'📝', color:'var(--pur)' },
     { label:'クイックリンク',val: quickLinks.length,  icon:'🔗', color:'var(--org)' },
     { label:'完了タスク',   val: tasks.filter(t=>t.done).length, icon:'☑', color:'var(--txd)' },
   ];
@@ -3933,8 +4079,7 @@ const VIEW_PANELS = {
   pomo:   ['panel-pomo'],
   log:    ['panel-log'],
   remind: ['panel-remind'],
-  memo:   ['panel-memo'],
-  yt:     ['panel-yt'],
+  ai:     ['panel-ai'],
 };
 let currentView = 'all';
 
@@ -4029,88 +4174,20 @@ function toggleManual() {
 // ══════════════════════════════════════════
 // YOUTUBE PANEL (in canvas)
 // ══════════════════════════════════════════
-function loadYtPanel() {
-  const raw = $('ytPanelUrl')?.value.trim(); if(!raw) return;
-  const videoId = extractYtId(raw);
-  if(!videoId) { toast('⚠ YouTube URLの形式が正しくありません'); return; }
-  const wrap = $('ytPanelEmbed'); if(!wrap) return;
-  wrap.innerHTML = `<iframe
-    src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
-    style="width:100%;height:100%;min-height:300px;border:none"
-    allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
-    allowfullscreen></iframe>`;
-}
+function loadYtPanel(){}// removed
+
 
 // ══════════════════════════════════════════
 // PANEL FREE RESIZE (drag bottom-right corner)
 // ══════════════════════════════════════════
-function initPanelResize() {
-  document.querySelectorAll('.panel').forEach(panel => {
-    // Only add handle if not already there
-    if(panel.querySelector('.panel-resize-handle')) return;
-    const handle = document.createElement('div');
-    handle.className = 'panel-resize-handle';
-    handle.title = 'ドラッグしてサイズ変更';
-    panel.appendChild(handle);
+function initPanelResize(){}// removed
 
-    let startY, startH;
-    handle.addEventListener('mousedown', e => {
-      e.preventDefault(); e.stopPropagation();
-      startY = e.clientY;
-      startH = panel.getBoundingClientRect().height;
-      document.body.style.cursor = 'nwse-resize';
-      document.body.style.userSelect = 'none';
 
-      function onMove(e) {
-        const newH = Math.max(120, startH + (e.clientY - startY));
-        panel.style.height = newH + 'px';
-      }
-      function onUp() {
-        document.body.style.cursor = '';
-        document.body.style.userSelect = '';
-        document.removeEventListener('mousemove', onMove);
-        document.removeEventListener('mouseup', onUp);
-        savePanelSizes();
-      }
-      document.addEventListener('mousemove', onMove);
-      document.addEventListener('mouseup', onUp);
-    });
+function savePanelSizes(){}// removed
 
-    // Touch support
-    handle.addEventListener('touchstart', e => {
-      e.preventDefault();
-      const t = e.touches[0];
-      startY = t.clientY;
-      startH = panel.getBoundingClientRect().height;
-      function onMove(e) {
-        const newH = Math.max(120, startH + (e.touches[0].clientY - startY));
-        panel.style.height = newH + 'px';
-      }
-      function onEnd() {
-        handle.removeEventListener('touchmove', onMove);
-        handle.removeEventListener('touchend', onEnd);
-        savePanelSizes();
-      }
-      handle.addEventListener('touchmove', onMove, {passive:false});
-      handle.addEventListener('touchend', onEnd);
-    }, {passive:false});
-  });
-}
 
-function savePanelSizes() {
-  const sizes = {};
-  document.querySelectorAll('.panel[id]').forEach(p => {
-    if(p.style.height) sizes[p.id] = p.style.height;
-  });
-  ls.set('cy3_panel_heights', sizes);
-}
+function loadPanelSizes(){}// removed
 
-function loadPanelSizes() {
-  const sizes = ls.get('cy3_panel_heights') || {};
-  Object.entries(sizes).forEach(([id, h]) => {
-    const el = $(id); if(el) el.style.height = h;
-  });
-}
 
 
 // ══════════════════════════════════════════
@@ -4122,12 +4199,12 @@ function renderQLSidebar() {
   const panel = $('qlSidePanel'); if(!panel) return;
   panel.innerHTML = quickLinks.map(q => `
     <a href="${q.url||'#'}" target="_blank" class="ql-side-item" title="${q.name}">
-      <span>${q.icon}</span>
-      <span class="tip">${q.name}</span>
+      <span style="width:24px;text-align:center;flex-shrink:0;font-size:15px">${q.icon}</span>
+      <span class="ql-side-label">${q.name}</span>
     </a>`).join('') +
     `<button class="ql-side-item ql-side-add" onclick="openQLModal()" title="追加・編集">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      <span class="tip">追加・編集</span>
+      <span style="width:24px;text-align:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+      <span class="ql-side-label">追加・編集</span>
     </button>`;
 }
 
@@ -4284,130 +4361,17 @@ if(typeof memoPages !== 'undefined') {
   if(window._memoNextId) nextMemoId = window._memoNextId;
 }
 
-function saveMemoState() {
-  saveCurrentMemoContent();
-  ls.set('cy3_memo_v2', { folders: memoFolders, pages: memoPages, nextId: nextMemoId });
-  // legacy compat
-  ls.set('cy3_memo', memoPages);
-}
+function saveMemoState(){}// removed
 
-function renderMemoTree() {
-  const el = $('memoPageList'); if(!el) return;
-  el.innerHTML = '';
-  // Render folders recursively (max 3 levels)
-  function renderFolder(folder, depth) {
-    if(depth > 2) return ''; // max 3 levels (0,1,2)
-    const children = memoFolders.filter(f => f.parentId === folder.id);
-    const pages = memoPages.filter(p => p.folderId === folder.id);
-    const totalItems = children.length + pages.length;
 
-    const wrap = document.createElement('div');
-    wrap.className = 'memo-folder' + (folder.open ? ' open' : '');
-    wrap.dataset.fid = folder.id;
+function renderMemoTree(){}// removed
 
-    // Folder head
-    const head = document.createElement('div');
-    head.className = 'memo-folder-head';
-    head.innerHTML = `
-      <span class="memo-folder-arrow">›</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="opacity:.5;flex-shrink:0"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
-      <span class="memo-folder-name">${folder.name}</span>
-      <span style="font-size:9px;color:var(--txd);margin-left:2px">${totalItems}</span>
-      <div class="memo-folder-actions">
-        ${depth < 2 ? `<button class="mfa-btn" title="サブフォルダ追加" onclick="event.stopPropagation();addMemoFolder('${folder.id}')">+</button>` : ''}
-        <button class="mfa-btn" title="ページ追加" onclick="event.stopPropagation();addMemoPage('${folder.id}')">📄</button>
-        <button class="mfa-btn" title="削除" onclick="event.stopPropagation();deleteMemoFolder('${folder.id}')" style="color:var(--red)">✕</button>
-      </div>`;
-    head.addEventListener('click', () => {
-      folder.open = !folder.open;
-      wrap.classList.toggle('open', folder.open);
-      saveMemoState();
-    });
-    wrap.appendChild(head);
 
-    // Children container
-    const childrenEl = document.createElement('div');
-    childrenEl.className = 'memo-folder-children';
+function addMemoFolder(){}// removed
 
-    // Sub-folders
-    children.forEach(child => childrenEl.appendChild(renderFolder(child, depth+1)));
 
-    // Pages in this folder
-    pages.forEach(p => {
-      const btn = document.createElement('button');
-      btn.className = 'memo-page-btn' + (p.id === activeMemoId ? ' active' : '');
-      btn.innerHTML = `
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.4;flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        <span class="mpn">${p.title||'無題'}</span>
-        <button class="memo-page-del" onclick="event.stopPropagation();deleteMemoPage('${p.id}')" title="削除">✕</button>`;
-      btn.addEventListener('click', () => switchMemoPage(p.id));
-      childrenEl.appendChild(btn);
-    });
+function deleteMemoFolder(){}// removed
 
-    // Add page button inside folder
-    const addBtn = document.createElement('button');
-    addBtn.className = 'memo-add-page-btn';
-    addBtn.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ページ追加`;
-    addBtn.addEventListener('click', () => addMemoPage(folder.id));
-    childrenEl.appendChild(addBtn);
-
-    wrap.appendChild(childrenEl);
-    return wrap;
-  }
-
-  // Top-level folders
-  memoFolders.filter(f => !f.parentId).forEach(f => el.appendChild(renderFolder(f, 0)));
-
-  // Root-level pages (no folder or folder not found)
-  const orphans = memoPages.filter(p => !p.folderId || !memoFolders.find(f=>f.id===p.folderId));
-  orphans.forEach(p => {
-    const btn = document.createElement('button');
-    btn.className = 'memo-page-btn' + (p.id === activeMemoId ? ' active' : '');
-    btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.4;flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="mpn">${p.title||'無題'}</span><button class="memo-page-del" onclick="event.stopPropagation();deleteMemoPage('${p.id}')" title="削除">✕</button>`;
-    btn.addEventListener('click', () => switchMemoPage(p.id));
-    el.appendChild(btn);
-  });
-
-  // Global add folder/page buttons
-  const bar = document.createElement('div');
-  bar.style.cssText = 'display:flex;gap:4px;padding:6px 4px 2px;border-top:1px solid var(--bo);margin-top:4px';
-  bar.innerHTML = `
-    <button class="memo-add-page-btn" style="flex:1" onclick="addMemoFolder(null)">
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> フォルダ
-    </button>
-    <button class="memo-add-page-btn" style="flex:1" onclick="addMemoPage(null)">
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ページ
-    </button>`;
-  el.appendChild(bar);
-}
-
-function addMemoFolder(parentId) {
-  const name = prompt('フォルダ名を入力してください', '新しいフォルダ');
-  if(!name) return;
-  // Check depth constraint
-  if(parentId) {
-    let depth = 0, cur = parentId;
-    while(cur) { depth++; const f=memoFolders.find(x=>x.id===cur); cur=f?.parentId||null; }
-    if(depth >= 2) { toast('フォルダは3階層まで作成できます'); return; }
-  }
-  memoFolders.push({ id:'f'+Date.now(), name, open:true, parentId: parentId||null });
-  saveMemoState();
-  renderMemoTree();
-}
-
-function deleteMemoFolder(id) {
-  const pages = memoPages.filter(p => p.folderId === id);
-  const children = memoFolders.filter(f => f.parentId === id);
-  if(pages.length > 0 || children.length > 0) {
-    if(!confirm(`このフォルダには${pages.length}件のページと${children.length}件のサブフォルダがあります。すべて削除しますか？`)) return;
-    pages.forEach(p => memoPages.splice(memoPages.indexOf(p), 1));
-    children.forEach(f => deleteMemoFolder(f.id));
-  }
-  memoFolders = memoFolders.filter(f => f.id !== id);
-  if(!memoPages.find(p=>p.id===activeMemoId)) activeMemoId = memoPages[0]?.id||null;
-  saveMemoState();
-  renderMemoTree();
-}
 
 // Override renderMemoPageList to use new tree renderer
 function renderMemoPageList() { renderMemoTree(); }
@@ -4434,6 +4398,732 @@ saveMemo = function() {
   toast('メモを保存しました');
 };
 
+
+// ══════════════════════════════════════════
+// DATE PICKER (shared global component)
+// ══════════════════════════════════════════
+const DatePicker = (() => {
+  let _targetId = null;   // hidden input id
+  let _displayId = null;  // display span id
+  let _triggerEl = null;  // trigger div
+  let _dpYear = 0, _dpMonth = 0;
+
+  function open(hiddenId, triggerEl) {
+    _targetId  = hiddenId;
+    _displayId = hiddenId + 'Display';
+    _triggerEl = triggerEl;
+    const val   = $(hiddenId)?.value;
+    const now   = val ? new Date(val + 'T00:00') : new Date();
+    _dpYear  = now.getFullYear();
+    _dpMonth = now.getMonth();
+    render();
+    const popup = $('globalDatePicker');
+    const rect  = triggerEl.getBoundingClientRect();
+    const left  = Math.min(rect.left, window.innerWidth - 285);
+    const top   = rect.bottom + 6;
+    popup.style.left = left + 'px';
+    popup.style.top  = top  + 'px';
+    popup.classList.add('open');
+    setTimeout(() => document.addEventListener('click', onOutsideClick, {once:true}), 10);
+  }
+
+  function close() {
+    $('globalDatePicker')?.classList.remove('open');
+  }
+
+  function onOutsideClick(e) {
+    if(!$('globalDatePicker')?.contains(e.target) && e.target !== _triggerEl) close();
+    else setTimeout(() => document.addEventListener('click', onOutsideClick, {once:true}), 10);
+  }
+
+  function select(dateStr) {
+    const inp = $(_targetId);
+    if(inp) inp.value = dateStr;
+    const disp = $(_displayId);
+    if(disp) {
+      disp.textContent = dateStr ? formatDateJP(dateStr) : '日付を選択';
+      disp.style.color = dateStr ? 'var(--tx)' : 'var(--txd)';
+    }
+    close();
+  }
+
+  function formatDateJP(s) {
+    if(!s) return '';
+    const [y,m,d] = s.split('-').map(Number);
+    const days = ['日','月','火','水','木','金','土'];
+    const wd = days[new Date(y,m-1,d).getDay()];
+    return `${y}年${m}月${d}日（${wd}）`;
+  }
+
+  function render() {
+    const popup = $('globalDatePicker'); if(!popup) return;
+    const today = todayStr();
+    const sel   = $(_targetId)?.value || '';
+    const firstDay = new Date(_dpYear, _dpMonth, 1);
+    const lastDay  = new Date(_dpYear, _dpMonth+1, 0);
+    const startWd  = (firstDay.getDay() + 6) % 7; // Mon=0
+    const MONTHS   = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+
+    // Get events for this month (from Google Calendar if available)
+    const eventDays = new Set();
+    if(typeof calEvents !== 'undefined') {
+      calEvents.forEach(ev => {
+        const d = (ev.start?.date || ev.start?.dateTime||'').slice(0,10);
+        if(d.startsWith(`${_dpYear}-${String(_dpMonth+1).padStart(2,'0')}`)) eventDays.add(d);
+      });
+    }
+    // Also mark task deadlines
+    if(typeof tasks !== 'undefined') {
+      tasks.filter(t=>!t.done&&t.deadline).forEach(t=>{
+        if(t.deadline.startsWith(`${_dpYear}-${String(_dpMonth+1).padStart(2,'0')}`)) eventDays.add(t.deadline);
+      });
+    }
+
+    let html = `
+    <div class="dp-header">
+      <button class="dp-nav" onclick="DatePicker._prevMonth()">‹</button>
+      <div class="dp-month-label">${_dpYear}年 ${MONTHS[_dpMonth]}</div>
+      <button class="dp-nav" onclick="DatePicker._nextMonth()">›</button>
+    </div>
+    <div class="dp-weekdays">
+      <div class="dp-wd" style="color:var(--red)">月</div><div class="dp-wd">火</div><div class="dp-wd">水</div>
+      <div class="dp-wd">木</div><div class="dp-wd">金</div><div class="dp-wd" style="color:#60a5fa">土</div>
+      <div class="dp-wd" style="color:var(--red)">日</div>
+    </div>
+    <div class="dp-days">`;
+
+    // Pad start
+    for(let i=0; i<startWd; i++) html += `<div class="dp-day other-month"></div>`;
+
+    for(let d=1; d<=lastDay.getDate(); d++) {
+      const ds = `${_dpYear}-${String(_dpMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const isToday = ds === today;
+      const isSel   = ds === sel;
+      const isPast  = ds < today;
+      const hasEv   = eventDays.has(ds);
+      const wd      = (new Date(_dpYear, _dpMonth, d).getDay());
+      const isSun = wd===0, isSat = wd===6;
+      const cls = ['dp-day', isToday?'today':'', isSel?'selected':'', isPast?'past':'', hasEv?'has-event':''].filter(Boolean).join(' ');
+      const col = isSun?'var(--red)':isSat?'#60a5fa':'';
+      html += `<div class="${cls}" style="${col?'color:'+col:''}" onclick="DatePicker._select('${ds}')">${d}</div>`;
+    }
+    html += `</div>
+    <div class="dp-shortcuts">
+      <button class="dp-sc" onclick="DatePicker._select('${today}')">今日</button>
+      <button class="dp-sc" onclick="DatePicker._selectOffset(1)">明日</button>
+      <button class="dp-sc" onclick="DatePicker._selectOffset(7)">来週</button>
+      <button class="dp-sc dp-clear" onclick="DatePicker._select('')">クリア</button>
+    </div>`;
+    popup.innerHTML = html;
+  }
+
+  function _prevMonth() { _dpMonth--; if(_dpMonth<0){_dpMonth=11;_dpYear--;} render(); }
+  function _nextMonth() { _dpMonth++; if(_dpMonth>11){_dpMonth=0;_dpYear++;} render(); }
+  function _select(ds) { select(ds); }
+  function _selectOffset(days) {
+    const d = new Date(); d.setDate(d.getDate()+days);
+    const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    select(ds);
+  }
+
+  return { open, close, render, _prevMonth, _nextMonth, _select, _selectOffset };
+})();
+
+function openDatePicker(hiddenId, triggerEl) { DatePicker.open(hiddenId, triggerEl); }
+
+// ══════════════════════════════════════════
+// ALARM ENGINE
+// ══════════════════════════════════════════
+let alarms = JSON.parse(localStorage.getItem('cy3_alarms')||'[]');
+let nextAlarmId = parseInt(localStorage.getItem('cy3_alarm_nid')||'1');
+let editingAlarmId = null;
+let _alarmCheckInterval = null;
+let _firingAlarm = null;
+
+function saveAlarms() {
+  localStorage.setItem('cy3_alarms', JSON.stringify(alarms));
+  localStorage.setItem('cy3_alarm_nid', String(nextAlarmId));
+}
+
+function renderAlarms() {
+  const list = $('alarmList'), empty = $('alarmEmpty'); if(!list) return;
+  const now = new Date();
+  const nowH = now.getHours(), nowM = now.getMinutes();
+  if(!alarms.length) {
+    list.style.display='none'; if(empty) empty.style.display='block'; return;
+  }
+  list.style.display='flex'; if(empty) empty.style.display='none';
+  const DAY_LABELS = ['日','月','火','水','木','金','土'];
+  list.innerHTML = alarms.map(a => {
+    const [h,m] = a.time.split(':').map(Number);
+    const isFiring = _firingAlarm?.id === a.id;
+    const tags = a.days.map(d => d===-1?'一度のみ':DAY_LABELS[d]).join(' ');
+    return `<div class="alarm-item${a.enabled?' active':''}${isFiring?' alarm-firing':''}" onclick="openAlarmModal(${a.id})">
+      <div style="flex:1">
+        <div class="alarm-time">${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}</div>
+        <div class="alarm-meta">
+          <div class="alarm-label">${a.label||'アラーム'}</div>
+          <div class="alarm-tags"><span class="alarm-tag">${tags||'一度のみ'}</span></div>
+        </div>
+      </div>
+      <label class="alarm-toggle" onclick="event.stopPropagation()">
+        <input type="checkbox" ${a.enabled?'checked':''} onchange="toggleAlarm(${a.id},this.checked)">
+        <span class="alarm-toggle-slider"></span>
+      </label>
+    </div>`;
+  }).join('');
+}
+
+function openAlarmModal(id=null) {
+  editingAlarmId = id;
+  const a = id ? alarms.find(x=>x.id===id) : null;
+  $('almTime').value = a?.time || '08:00';
+  $('almLabel').value = a?.label || '';
+  $('almSound').value = a?.sound || 'chime';
+  $('almStatus').textContent = '';
+  $('almDelBtn').style.display = id ? '' : 'none';
+  // Day buttons
+  document.querySelectorAll('.alm-day').forEach(btn => {
+    const d = parseInt(btn.dataset.d);
+    btn.classList.toggle('active', a?.days?.includes(d) || false);
+    btn.style.borderColor = btn.classList.contains('active') ? 'var(--c)' : '';
+    btn.style.color = btn.classList.contains('active') ? 'var(--c)' : '';
+    btn.onclick = () => {
+      if(d === -1) {
+        document.querySelectorAll('.alm-day:not([data-d="-1"])').forEach(b=>{b.classList.remove('active');b.style.borderColor='';b.style.color='';});
+      } else {
+        document.querySelector('.alm-day[data-d="-1"]')?.classList.remove('active');
+        document.querySelector('.alm-day[data-d="-1"]').style.borderColor='';
+        document.querySelector('.alm-day[data-d="-1"]').style.color='';
+      }
+      btn.classList.toggle('active');
+      btn.style.borderColor = btn.classList.contains('active') ? 'var(--c)' : '';
+      btn.style.color = btn.classList.contains('active') ? 'var(--c)' : '';
+    };
+  });
+  $('alarmModal').classList.add('open');
+}
+
+function saveAlarm() {
+  const time = $('almTime').value;
+  const label = $('almLabel').value.trim();
+  const sound = $('almSound').value;
+  const days = [...document.querySelectorAll('.alm-day.active')].map(b=>parseInt(b.dataset.d));
+  if(!time) { toast('時刻を設定してください'); return; }
+  if(!days.length) { days.push(-1); } // default one-time
+  if(editingAlarmId) {
+    const a = alarms.find(x=>x.id===editingAlarmId);
+    if(a) Object.assign(a, {time, label, sound, days, enabled:true});
+  } else {
+    alarms.push({id:nextAlarmId++, time, label, sound, days, enabled:true, lastFired:null});
+  }
+  saveAlarms(); renderAlarms();
+  closeModal('alarmModal');
+  toast('アラームを設定しました');
+}
+
+function deleteAlarm() {
+  alarms = alarms.filter(x=>x.id!==editingAlarmId);
+  saveAlarms(); renderAlarms();
+  closeModal('alarmModal');
+  toast('アラームを削除しました');
+}
+
+function toggleAlarm(id, enabled) {
+  const a = alarms.find(x=>x.id===id);
+  if(a) { a.enabled = enabled; saveAlarms(); renderAlarms(); }
+}
+
+function _playAlarmSound(type) {
+  try {
+    const ctx = getAudioCtx ? getAudioCtx() : new (window.AudioContext||window.webkitAudioContext)();
+    const sounds = {
+      chime: [[523,0,.15],[659,.2,.15],[784,.4,.2],[1047,.65,.3]],
+      bell:  [[880,0,.4],[880,.5,.3]],
+      gentle:[[440,0,.3],[554,.35,.25],[659,.65,.2]],
+    };
+    const seq = sounds[type] || sounds.chime;
+    seq.forEach(([freq, delay, dur]) => {
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0,ctx.currentTime+delay);
+      gain.gain.linearRampToValueAtTime(0.3,ctx.currentTime+delay+0.05);
+      gain.gain.linearRampToValueAtTime(0,ctx.currentTime+delay+dur);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(ctx.currentTime+delay); osc.stop(ctx.currentTime+delay+dur+0.1);
+    });
+  } catch(e){}
+}
+
+function checkAlarms() {
+  if(!alarms.length) return;
+  const now = new Date();
+  const hm = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const wd = now.getDay();
+  const todayKey = now.toISOString().slice(0,10);
+  alarms.forEach(a => {
+    if(!a.enabled || a.time !== hm) return;
+    if(a.lastFired === todayKey) return;
+    if(!a.days.includes(-1) && !a.days.includes(wd)) return;
+    a.lastFired = todayKey;
+    if(a.days.includes(-1)) { a.enabled = false; } // one-time
+    saveAlarms(); renderAlarms();
+    _firingAlarm = a;
+    if(a.sound !== 'none') _playAlarmSound(a.sound);
+    NOTIF.push({
+      title: a.label || 'アラーム',
+      msg: hm,
+      type: 'pomo',
+      icon: '⏰',
+      duration: 15000,
+      onClick: () => { _firingAlarm = null; renderAlarms(); }
+    });
+    setTimeout(() => { _firingAlarm = null; renderAlarms(); }, 15000);
+  });
+}
+
+function startAlarmCheck() {
+  clearInterval(_alarmCheckInterval);
+  checkAlarms();
+  // Sync to next minute
+  const ms = (60 - new Date().getSeconds()) * 1000;
+  setTimeout(() => {
+    checkAlarms();
+    _alarmCheckInterval = setInterval(checkAlarms, 60000);
+  }, ms);
+}
+
+// ══════════════════════════════════════════
+// CALENDAR DAY VIEW + EVENT POPUP
+// ══════════════════════════════════════════
+window._calViewMode = ls.get('cy3_calView') || 'week';
+
+function setCalViewMode(mode) {
+  window._calViewMode = mode;
+  ls.set('cy3_calView', mode);
+  $('calWeekBtn')?.classList.toggle('active', mode==='week');
+  $('calDayBtn')?.classList.toggle('active', mode==='day');
+  if(typeof calCurrentMon !== 'undefined') {
+    if(mode === 'day') calRenderDay(calCurrentMon);
+    else calRenderWeek(calCurrentMon);
+  }
+}
+
+function calRenderDay(date) {
+  $('calLoadingView').style.display = 'none';
+  $('calWeekView').style.display = 'block';
+  const HOUR_START = 7, HOUR_END = 21, PX_PER_H = 52;
+  const HOURS = HOUR_END - HOUR_START;
+  const now = new Date();
+  const ds = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+  const DAY_LABELS = ['日','月','火','水','木','金','土'];
+  const isToday = ds === todayStr();
+  const timed = calEvents.filter(e => {
+    if(!e.start.dateTime) return false;
+    const s = new Date(e.start.dateTime);
+    return `${s.getFullYear()}-${String(s.getMonth()+1).padStart(2,'0')}-${String(s.getDate()).padStart(2,'0')}` === ds;
+  });
+  const allDay = calEvents.filter(e => e.start.date && e.start.date === ds);
+
+  let html = `<div class="cal-week-header" style="grid-template-columns:48px 1fr">
+    <div></div>
+    <div class="cal-day-head ${isToday?'today':''}">
+      <div class="cal-wd" style="color:${date.getDay()===0?'var(--red)':date.getDay()===6?'#60a5fa':'var(--txd)'}">${DAY_LABELS[date.getDay()]}</div>
+      <div class="cal-num">${date.getDate()}</div>
+    </div>
+  </div>`;
+
+  if(allDay.length) {
+    html += `<div class="cal-allday-row" style="grid-template-columns:48px 1fr"><div style="font-size:9px;color:var(--txd);padding:4px 6px 0;text-align:right;font-family:var(--fm)">終日</div><div class="cal-allday-cell">`;
+    allDay.forEach(e => {
+      const bg = gcalColor(e);
+      html += `<div class="cal-allday-event" style="background:${bg};color:${textColor(bg)}">${e.summary||'（無題）'}</div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  html += `<div class="cal-time-grid" style="grid-template-columns:48px 1fr">
+    <div style="display:flex;flex-direction:column">`;
+  for(let h=HOUR_START;h<HOUR_END;h++) html += `<div class="cal-time-label">${h}:00</div>`;
+  html += `</div><div class="cal-day-col" style="${isToday?'background:rgba(0,229,204,.04)':''}">`;
+  for(let h=0;h<HOURS;h++) html += `<div class="cal-hour-line" style="top:${h*PX_PER_H}px"></div>`;
+  if(isToday) {
+    const nh = now.getHours()+now.getMinutes()/60;
+    if(nh>=HOUR_START&&nh<HOUR_END) html += `<div class="cal-now-line" style="top:${(nh-HOUR_START)*PX_PER_H}px"></div>`;
+  }
+  timed.forEach(ev => {
+    const s = new Date(ev.start.dateTime);
+    const e2 = ev.end?.dateTime ? new Date(ev.end.dateTime) : new Date(s.getTime()+3600000);
+    const sh = s.getHours()+s.getMinutes()/60, eh = e2.getHours()+e2.getMinutes()/60;
+    const top = Math.max(0,(sh-HOUR_START))*PX_PER_H;
+    const ht  = Math.max(24,(eh-sh)*PX_PER_H-2);
+    const bg = gcalColor(ev), fg = textColor(bg);
+    const ts = `${String(s.getHours()).padStart(2,'0')}:${String(s.getMinutes()).padStart(2,'0')}`;
+    const te = `${String(e2.getHours()).padStart(2,'0')}:${String(e2.getMinutes()).padStart(2,'0')}`;
+    html += `<div class="cal-event" style="top:${top}px;height:${ht}px;width:calc(100% - 4px);left:2px;background:${bg};color:${fg};cursor:pointer"
+      onclick="showCalEventPopup(event,'${(ev.summary||'').replace(/'/g,'').replace(/"/g,'')}','${ts}〜${te}','${(ev.location||'').replace(/'/g,'')}','${ev.htmlLink||''}')"
+      title="${ev.summary||'（無題）'}">
+      <div class="cal-event-title" style="font-size:12px">${ev.summary||'（無題）'}</div>
+      <div class="cal-event-time">${ts}〜${te}</div>
+      ${ev.location?`<div style="font-size:9px;opacity:.75;margin-top:2px">${ev.location}</div>`:''}
+    </div>`;
+  });
+  html += `</div></div>`;
+  $('calGrid').innerHTML = html;
+  const scrollTo = Math.max(0,(now.getHours()-HOUR_START-1)*PX_PER_H);
+  setTimeout(()=>{ const g=$('calGrid')?.querySelector('.cal-time-grid'); if(g)g.scrollTop=scrollTo;},50);
+}
+
+function showCalEventPopup(e, title, time, location, link) {
+  e.stopPropagation();
+  const popup = $('calEventPopup'); if(!popup) return;
+  popup.innerHTML = `
+    <div class="cep-title">${title||'（無題）'}</div>
+    <div class="cep-row"><span class="cep-icon">🕐</span>${time}</div>
+    ${location?`<div class="cep-row"><span class="cep-icon">📍</span>${location}</div>`:''}
+    <div class="cep-actions">
+      ${link?`<a href="${link}" target="_blank" class="btn btn-sm">Googleカレンダーで開く</a>`:''}
+      <button class="btn btn-sm" onclick="addTaskFromCalEvent('${title}','${time.split('〜')[0]}')">タスクに追加</button>
+      <button class="btn btn-icon btn-sm" style="margin-left:auto;opacity:.5" onclick="$('calEventPopup').style.display='none'">✕</button>
+    </div>`;
+  popup.style.display = 'block';
+  const x = Math.min(e.clientX+8, window.innerWidth-320);
+  const y = Math.min(e.clientY+8, window.innerHeight-200);
+  popup.style.left = x+'px'; popup.style.top = y+'px';
+  setTimeout(()=>document.addEventListener('click',()=>{ popup.style.display='none';},{once:true}),0);
+}
+
+function addTaskFromCalEvent(name, time) {
+  if(typeof openTaskModal==='function') {
+    openTaskModal();
+    setTimeout(()=>{ $('tmName').value=name||''; $('tmName').focus(); },50);
+  }
+  $('calEventPopup').style.display='none';
+  toast('タスクモーダルを開きました');
+}
+
+// Override calNavigate to also support day view
+const _origCalNavigate = typeof calNavigate === 'function' ? calNavigate : ()=>{};
+calNavigate = function(delta) {
+  if(window._calViewMode === 'day' && typeof calCurrentMon !== 'undefined') {
+    calCurrentMon.setDate(calCurrentMon.getDate() + delta);
+    calRenderDay(calCurrentMon);
+    // Update week label
+    if($('calWeekLabel')) $('calWeekLabel').textContent = `${calCurrentMon.getMonth()+1}/${calCurrentMon.getDate()}`;
+    return;
+  }
+  _origCalNavigate(delta);
+};
+
+// COLUMN SELECTOR (removed v10)
+function setPanelCols(){}
+function loadPanelCols(){}
+
+
+// ══════════════════════════════════════════════════
+// AI SECRETARY ENGINE
+// ══════════════════════════════════════════════════
+const AiSec = (() => {
+  let _hist    = [];   // チャット履歴 [{role,content}]
+  let _busy    = false;
+  let _srec    = null; // SpeechRecognition
+  let _recOn   = false;
+
+  // ─ ローカル設定 ─────────────────────────────────
+  function cfg() {
+    try { return JSON.parse(localStorage.getItem('cy3_ai_cfg')||'{}'); } catch(e){ return {}; }
+  }
+  function saveCfg(o) { localStorage.setItem('cy3_ai_cfg', JSON.stringify(o)); }
+  function apiKey() { return cfg().key || ''; }
+
+  // ─ ダッシュボードコンテキスト ────────────────────
+  function buildCtx() {
+    const today = typeof todayStr==='function' ? todayStr() : new Date().toISOString().slice(0,10);
+    const C = { today };
+    try {
+      if(typeof tasks!=='undefined') {
+        const alive = tasks.filter(t=>!t.done&&!t.archived);
+        C.tasks = {
+          overdue  : alive.filter(t=>t.deadline&&t.deadline<today).map(t=>({名前:t.name,期限:t.deadline,優先度:t.priority})),
+          today    : alive.filter(t=>t.deadline===today).map(t=>t.name),
+          upcoming : alive.filter(t=>t.deadline&&t.deadline>today).slice(0,8).map(t=>({名前:t.name,期限:t.deadline})),
+          count    : alive.length,
+        };
+      }
+      if(typeof projects!=='undefined')
+        C.projects = projects.filter(p=>!p.archived).map(p=>({名前:p.name,ステータス:p.status,進捗:p.progress,期限:p.deadline}));
+      if(typeof goals!=='undefined')
+        C.goals = goals.map(g=>({タイトル:g.title,進捗:g.progress,目標:g.target}));
+      if(typeof reminds!=='undefined')
+        C.reminds = reminds.filter(r=>!r.done).slice(0,8).map(r=>({名前:r.name,種別:r.type,期限:r.deadline}));
+      if(typeof sessCnt!=='undefined') C.pomoToday = sessCnt;
+      const fn = typeof ls!=='undefined' ? ls.get('cy3_focusNote') : null;
+      if(fn) C.focusNote = fn;
+    } catch(e){}
+    return C;
+  }
+
+  // ─ システムプロンプト ────────────────────────────
+  function sysPrompt() {
+    const c = cfg();
+    const ctx = buildCtx();
+    const name = c.aiName || 'AI秘書';
+    return `あなたは「${name}」という名前の、CYAINEダッシュボードに統合されたパーソナル秘書AIです。ユーザーの業務・タスク・目標・プロジェクト管理を支援します。
+
+## 現在のダッシュボードデータ（今日: ${ctx.today}）
+
+### タスク
+- 期限切れ（${ctx.tasks?.overdue?.length||0}件）: ${JSON.stringify(ctx.tasks?.overdue)}
+- 本日締切（${ctx.tasks?.today?.length||0}件）: ${JSON.stringify(ctx.tasks?.today)}
+- 直近予定: ${JSON.stringify(ctx.tasks?.upcoming)}
+- アクティブ合計: ${ctx.tasks?.count||0}件
+
+### プロジェクト
+${JSON.stringify(ctx.projects)}
+
+### 今月の目標
+${JSON.stringify(ctx.goals)}
+
+### リマインド・習慣
+${JSON.stringify(ctx.reminds)}
+
+### ポモドーロ（本日）
+${ctx.pomoToday||0}セッション完了
+
+### フォーカスノート
+${ctx.focusNote||'（未設定）'}
+
+## 行動指針
+- 日本語で返答する
+- データに基づき具体的なアドバイスを行う
+- 期限切れタスクがあれば必ず言及し対処法を提案する
+- 返答は簡潔に（目安200〜400字）。レポートは例外
+- レポート要求時は「件名: ○○」から始まるメール形式で構造化する
+- ユーザーへの敬語は自然な範囲で
+${c.extra ? `\n## 追加の指示\n${c.extra}` : ''}`;
+  }
+
+  // ─ メッセージ描画 ───────────────────────────────
+  function render() {
+    const el = $('aiMessages'); if(!el) return;
+    if(!_hist.length) {
+      const c = cfg();
+      const name = c.aiName || 'AI秘書';
+      el.innerHTML = `<div class="ai-msg ai-msg-bot">
+        <div class="ai-avatar">${name.slice(0,2).toUpperCase()}</div>
+        <div class="ai-bubble">
+          こんにちは！<strong>${name}</strong>です。タスクの期限確認・プロジェクト相談・週次レポート生成など何でも聞いてください。<br><br>
+          上のボタンから<em>クイックアクション</em>も使えます。<br>
+          <span style="color:var(--txd);font-size:10.5px">※ Claude APIキーの設定が必要です（右上の⚙ボタン）</span>
+        </div>
+      </div>`;
+      return;
+    }
+    el.innerHTML = _hist.map(m => {
+      if(m.role==='user') return `<div class="ai-msg ai-msg-user"><div class="ai-avatar">You</div><div class="ai-bubble">${esc(m.content)}</div></div>`;
+      return `<div class="ai-msg ai-msg-bot"><div class="ai-avatar">${aiAvLabel()}</div><div class="ai-bubble">${fmt(m.content)}</div></div>`;
+    }).join('');
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function aiAvLabel() {
+    const n = cfg().aiName||'AI秘書'; return n.slice(0,2).toUpperCase();
+  }
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  }
+  function fmt(text) {
+    // minimal markdown
+    let s = String(text);
+    s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    s = s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    s = s.replace(/\*(.+?)\*/g,'<em>$1</em>');
+    s = s.replace(/`(.+?)`/g,'<code>$1</code>');
+    s = s.replace(/^#{1,3} (.+)$/gm,'<strong style="color:var(--tx);display:block;margin:6px 0 2px;font-family:var(--fd)">$1</strong>');
+    s = s.replace(/^[-・•] (.+)$/gm,'<li>$1</li>');
+    s = s.replace(/(<li>.*<\/li>\n?)+/g, v=>'<ul>'+v+'</ul>');
+    s = s.replace(/^---$/gm,'<hr>');
+    s = s.replace(/\n/g,'<br>');
+    return s;
+  }
+
+  function showThinking() {
+    const el = $('aiMessages'); if(!el) return;
+    const d = document.createElement('div');
+    d.className='ai-msg ai-msg-bot'; d.id='aiThink';
+    d.innerHTML=`<div class="ai-avatar">${aiAvLabel()}</div><div class="ai-bubble"><div class="ai-dots"><span></span><span></span><span></span></div></div>`;
+    el.appendChild(d); el.scrollTop=el.scrollHeight;
+  }
+  function hideThinking() { $('aiThink')?.remove(); }
+
+  function setSend(on) { const b=$('aiSendBtn'); if(b) b.disabled=!on; }
+
+  // ─ API呼び出し ────────────────────────────────────
+  async function send(msg) {
+    if(_busy) return;
+    const key = apiKey();
+    if(!key) { toast('APIキーを設定してください（AI秘書パネルの⚙ボタン）'); return; }
+
+    _hist.push({role:'user', content:msg});
+    render(); showThinking(); _busy=true; setSend(false);
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'},
+        body: JSON.stringify({
+          model:'claude-sonnet-4-20250514',
+          max_tokens:1200,
+          system: sysPrompt(),
+          messages: _hist.slice(-14) // 最大7往復
+        })
+      });
+      if(!res.ok) {
+        const e = await res.json().catch(()=>({}));
+        throw new Error(e.error?.message||`HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      const reply = data.content?.[0]?.text || '（空の応答）';
+      _hist.push({role:'assistant', content:reply});
+
+      // レポート検出 → メールボタン付与
+      const isReport = reply.includes('件名') || (reply.includes('レポート')&&reply.length>300);
+      hideThinking(); render();
+      if(isReport) appendEmailBtn(reply);
+
+    } catch(e) {
+      _hist.push({role:'assistant', content:`エラー: ${e.message}\n\nAPIキーや通信環境を確認してください。`});
+      hideThinking(); render();
+    }
+    _busy=false; setSend(true);
+  }
+
+  function appendEmailBtn(reportText) {
+    const el = $('aiMessages'); if(!el) return;
+    const last = el.lastElementChild?.querySelector('.ai-bubble'); if(!last) return;
+    const btn = document.createElement('button');
+    btn.className='ai-act-btn';
+    btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> メールで送る';
+    btn.onclick = () => aiOpenEmail(reportText);
+    last.appendChild(document.createElement('br'));
+    last.appendChild(btn);
+  }
+
+  // ─ クイックアクション ────────────────────────────
+  function quick(type) {
+    const msgs = {
+      overdue: '期限切れタスクと本日締切のタスクを全て確認して、優先順位をつけた対処計画を提案してください。',
+      report:  '今週の進捗サマリーを週次レポートとして作成してください。タスク・プロジェクト・目標の達成状況を含め、件名から始まるメール送信可能な形式でまとめてください。',
+      today:   '今日のダッシュボード状況を見て、今日集中すべきことと注意点を簡潔に3〜5点で教えてください。',
+    };
+    const m = msgs[type]; if(!m) return;
+    $('aiInput') && ($('aiInput').value='');
+    send(m);
+  }
+
+  // ─ 音声入力 ──────────────────────────────────────
+  function toggleVoice() {
+    if(_recOn) { _srec?.stop(); return; }
+    const SR = window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR) { toast('音声入力はChrome/Edgeで利用できます'); return; }
+    _srec = new SR();
+    _srec.lang='ja-JP'; _srec.interimResults=false;
+    _srec.onresult = e => {
+      const t = e.results[0][0].transcript;
+      const ta=$('aiInput');
+      if(ta){ ta.value=(ta.value+' '+t).trim(); aiResize(ta); }
+    };
+    _srec.onend = () => { _recOn=false; $('aiVoiceBtn')?.classList.remove('rec'); };
+    _srec.onerror = e => { _recOn=false; $('aiVoiceBtn')?.classList.remove('rec'); toast('音声エラー: '+e.error); };
+    _srec.start();
+    _recOn=true; $('aiVoiceBtn')?.classList.add('rec');
+  }
+
+  // ─ ステータス更新 ─────────────────────────────────
+  function updateStatus() {
+    const dot = $('aiStatusDot');
+    const hint = $('aiHintBar');
+    const key = apiKey();
+    const c = cfg();
+    if(dot) {
+      dot.style.background = key ? 'var(--grn)' : 'var(--txd)';
+      dot.style.boxShadow  = key ? '0 0 8px var(--grn)' : 'none';
+      dot.title = key ? '接続済み' : 'APIキー未設定';
+    }
+    if(hint) hint.style.display = key ? 'none' : 'flex';
+    // Update panel title
+    const title = $('aiPanelTitle');
+    if(title && c.aiName) title.textContent = c.aiName;
+    // Add ai to VIEW_PANELS if not yet
+    try { if(typeof VIEW_PANELS!=='undefined'&&!VIEW_PANELS.ai) VIEW_PANELS.ai=['panel-ai']; } catch(e){}
+  }
+
+  return { send, quick, toggleVoice, updateStatus, cfg, saveCfg };
+})();
+
+// ── グローバル関数 ──────────────────────────────────
+function aiSend() {
+  const ta=$('aiInput'); if(!ta) return;
+  const msg=ta.value.trim(); if(!msg) return;
+  ta.value=''; aiResize(ta);
+  AiSec.send(msg);
+}
+function aiKeydown(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();aiSend();} }
+function aiResize(ta) { ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,90)+'px'; }
+function aiQuick(t) { AiSec.quick(t); }
+function aiToggleVoice() { AiSec.toggleVoice(); }
+
+function openAiSettings() {
+  const c=AiSec.cfg();
+  if($('aiApiKey'))      $('aiApiKey').value      = c.key||'';
+  if($('aiNameInput'))   $('aiNameInput').value    = c.aiName||'';
+  if($('aiSysExtra'))    $('aiSysExtra').value     = c.extra||'';
+  if($('aiReportEmail')) $('aiReportEmail').value  = c.reportEmail||'';
+  if($('aiTestResult'))  $('aiTestResult').textContent='';
+  $('aiSettingsModal')?.classList.add('open');
+}
+function aiSaveSettings() {
+  const key   = $('aiApiKey')?.value.trim()||'';
+  const name  = $('aiNameInput')?.value.trim()||'';
+  const extra = $('aiSysExtra')?.value.trim()||'';
+  const email = $('aiReportEmail')?.value.trim()||'';
+  AiSec.saveCfg({key, aiName:name, extra, reportEmail:email});
+  AiSec.updateStatus();
+  closeModal('aiSettingsModal');
+  toast('AI設定を保存しました');
+}
+async function aiTestConn() {
+  const key=$('aiApiKey')?.value.trim();
+  const res=$('aiTestResult'); if(!res) return;
+  if(!key){res.textContent='⚠ APIキーを入力してください';res.style.color='var(--ylw)';return;}
+  res.textContent='接続テスト中…'; res.style.color='var(--txd)';
+  try {
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:5,messages:[{role:'user',content:'hi'}]})
+    });
+    if(r.ok){res.textContent='✅ 接続成功！';res.style.color='var(--grn)';}
+    else{const e=await r.json();res.textContent=`❌ ${e.error?.message||r.status}`;res.style.color='var(--red)';}
+  } catch(e){res.textContent=`❌ ${e.message}`;res.style.color='var(--red)';}
+}
+function aiOpenEmail(text) {
+  const c=AiSec.cfg();
+  const sub=text.match(/件名[：:]\s*(.+)/)?.[1]?.trim() || '週次レポート — '+new Date().toLocaleDateString('ja-JP');
+  if($('emailTo'))      $('emailTo').value      = c.reportEmail||'';
+  if($('emailSubject')) $('emailSubject').value  = sub;
+  if($('emailBody'))    $('emailBody').value     = text;
+  $('aiEmailModal')?.classList.add('open');
+}
+function aiCopyEmail() {
+  navigator.clipboard.writeText($('emailBody')?.value||'').then(()=>toast('コピーしました'));
+}
+function aiOpenMailto() {
+  const to  = encodeURIComponent($('emailTo')?.value||'');
+  const sub = encodeURIComponent($('emailSubject')?.value||'');
+  const body= encodeURIComponent($('emailBody')?.value||'');
+  window.open(`mailto:${to}?subject=${sub}&body=${body}`);
+}
 // INIT
 // ══════════════════════════════════════════
 try { rebuildProjSelect(); } catch(e) { console.warn('rebuildProjSelect:', e); }
@@ -4441,20 +5131,36 @@ try { renderGoals(); } catch(e) { console.warn('renderGoals:', e); }
 try { renderTasks(); } catch(e) { console.warn('renderTasks:', e); }
 try { renderProjList(); } catch(e) { console.warn('renderProjList:', e); }
 try { renderQL(); } catch(e) { console.warn('renderQL:', e); }
-try { initMemo(); } catch(e) { console.warn('initMemo:', e); }
+
 try { initSoundControl(); } catch(e) { console.warn('initSoundControl:', e); }
 try { loadLayout(); } catch(e) { console.warn('loadLayout:', e); }
 try { loadPanelCollapse(); } catch(e) { console.warn('loadPanelCollapse:', e); }
 try { renderReminds(); } catch(e) { console.warn('renderReminds:', e); }
-try { SB.init(); } catch(e) { console.warn('SB.init:', e); }
-try { initPanelResize(); } catch(e) { console.warn('initPanelResize:', e); }
+
 try { loadPanelSizes(); } catch(e) { console.warn('loadPanelSizes:', e); }
 try { renderQLPopup(); } catch(e) { console.warn('renderQLPopup:', e); }
 // Restore last view
 try { const v=ls.get('cy3_view'); if(v&&v!=='all') setView(v,null); } catch(e){}
-try { NOTIF.start(); } catch(e){ console.warn('NOTIF.start:', e); }
+try { setTimeout(()=>NOTIF.start(), 3000); } catch(e){ console.warn('NOTIF.start:', e); }
 try { renderQLSidebar(); } catch(e){ console.warn('renderQLSidebar:', e); }
-try { renderMemoTree(); } catch(e){ console.warn('renderMemoTree:', e); }
+try { AiSec.updateStatus(); } catch(e){ console.warn('AiSec:', e); }
+// デフォルト折りたたみパネルを初期化
+try {
+  document.querySelectorAll('.panel[data-collapsed="true"]').forEach(panel => {
+    const pb = panel.querySelector('.pb, [id^="log"], .wl-wrap');
+    if(pb) pb.style.display = 'none';
+    const btn = panel.querySelector('.ph-collapse');
+    if(btn) btn.textContent = '▼';
+    panel.classList.add('collapsed');
+  });
+} catch(e){}
+try { renderAlarms(); startAlarmCheck(); } catch(e){ console.warn('alarms:', e); }
+try {
+  // Restore cal view mode
+  const cm = window._calViewMode;
+  if($('calWeekBtn')) $('calWeekBtn').classList.toggle('active', cm==='week');
+  if($('calDayBtn')) $('calDayBtn').classList.toggle('active', cm==='day');
+} catch(e){}
 window.addEventListener('resize',()=>{
   if($('projGanttView').style.display!=='none') renderGantt();
 });
@@ -4516,53 +5222,16 @@ document.getElementById('remindQuickInp') && document.getElementById('remindQuic
 // ══════════════════════════════════════════
 let ytMinimized = false;
 
-function toggleYtPlayer() {
-  const player = $('ytPlayer');
-  player.classList.toggle('active');
-  if(player.classList.contains('active')) {
-    $('ytUrlInput').focus();
-  }
-}
-function closeYtPlayer() {
-  $('ytPlayer').classList.remove('active');
-  // stop video
-  $('ytEmbed').src = '';
-  $('ytEmbed').style.display = 'none';
-  $('ytNoVideo').style.display = 'flex';
-}
-function toggleYtMinimize() {
-  ytMinimized = !ytMinimized;
-  $('ytPlayer').classList.toggle('minimized', ytMinimized);
-  $('ytMinBtn').textContent = ytMinimized ? '▭' : '▬';
-}
-function loadYtVideo() {
-  const raw = $('ytUrlInput').value.trim();
-  if(!raw) return;
-  const videoId = extractYtId(raw);
-  if(!videoId) { toast('⚠ YouTube URLの形式が正しくありません'); return; }
-  const embed = $('ytEmbed');
-  embed.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-  embed.style.display = 'block';
-  $('ytNoVideo').style.display = 'none';
-  // try to get title from oEmbed
-  fetch(`https://www.youtube.com/oembed?url=https://youtu.be/${videoId}&format=json`)
-    .then(r=>r.json()).then(d=>{ $('ytTitle').textContent = d.title || 'YouTube'; })
-    .catch(()=>{ $('ytTitle').textContent = '動画再生中'; });
-  if(ytMinimized) toggleYtMinimize();
-}
-function extractYtId(url) {
-  // handle youtu.be/ID, youtube.com/watch?v=ID, youtube.com/embed/ID, bare ID
-  let m;
-  m = url.match(/youtu\.be\/([^?&\s]+)/);
-  if(m) return m[1];
-  m = url.match(/youtube\.com\/.*[?&]v=([^&\s]+)/);
-  if(m) return m[1];
-  m = url.match(/youtube\.com\/embed\/([^?&\s]+)/);
-  if(m) return m[1];
-  // bare 11-char ID
-  if(/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
-  return null;
-}
+function toggleYtPlayer(){}// removed
+
+function closeYtPlayer(){}// removed
+
+function toggleYtMinimize(){}// removed
+
+function loadYtVideo(){}// removed
+
+function extractYtId(){}// removed
+
 
 // ══════════════════════════════════════════
 // SUPABASE SYNC ENGINE
@@ -4712,6 +5381,8 @@ const SB = (() => {
   return { init, markDirty, pushAll, pullFromCloud, SYNC_KEYS,
     get connected() { return !!_url; } };
 })();
+// Initialize Supabase after definition
+try { SB.init(); } catch(e) { console.warn('SB.init:', e); }
 
 // ── Patch ls.set to notify SB of dirty keys ──
 const _origSet = ls.set.bind(ls);
@@ -4824,5 +5495,130 @@ function copySql() {
   });
 }
 </script>
+
+<!-- MODAL: Alarm -->
+<div class="mo" id="alarmModal" onclick="if(event.target===this)closeModal('alarmModal')">
+  <div class="mod" style="width:min(400px,95vw)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <div class="mod-t" style="margin:0">アラーム設定</div>
+      <button class="btn btn-icon" onclick="closeModal('alarmModal')" style="opacity:.5">✕</button>
+    </div>
+    <div class="fl">
+      <label class="flb">時刻</label>
+      <input class="fi" type="time" id="almTime" value="08:00">
+    </div>
+    <div class="fl">
+      <label class="flb">ラベル（任意）</label>
+      <input class="fi" id="almLabel" placeholder="起床、薬を飲む、会議前…">
+    </div>
+    <div class="fl">
+      <label class="flb">繰り返し</label>
+      <div style="display:flex;gap:5px;flex-wrap:wrap" id="almDays">
+        <button class="btn btn-sm alm-day" data-d="0">日</button>
+        <button class="btn btn-sm alm-day" data-d="1">月</button>
+        <button class="btn btn-sm alm-day" data-d="2">火</button>
+        <button class="btn btn-sm alm-day" data-d="3">水</button>
+        <button class="btn btn-sm alm-day" data-d="4">木</button>
+        <button class="btn btn-sm alm-day" data-d="5">金</button>
+        <button class="btn btn-sm alm-day" data-d="6">土</button>
+        <button class="btn btn-sm alm-day" data-d="-1">一度だけ</button>
+      </div>
+    </div>
+    <div class="fl">
+      <label class="flb">サウンド</label>
+      <select class="fi" id="almSound">
+        <option value="chime">チャイム</option>
+        <option value="bell">ベル</option>
+        <option value="gentle">やさしい音</option>
+        <option value="none">サイレント（通知のみ）</option>
+      </select>
+    </div>
+    <div id="almStatus" style="min-height:18px;font-size:11px;color:var(--txd);margin-bottom:8px"></div>
+    <div class="mod-foot">
+      <button class="btn" id="almDelBtn" style="display:none;color:var(--red);border-color:var(--red)" onclick="deleteAlarm()">削除</button>
+      <button class="btn" onclick="closeModal('alarmModal')">キャンセル</button>
+      <button class="btn btn-p" onclick="saveAlarm()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- CAL EVENT POPUP (global) -->
+<div id="calEventPopup" class="cal-event-popup" style="display:none" onclick="event.stopPropagation()"></div>
+
+<!-- DATE PICKER POPUP (shared global) -->
+<div id="globalDatePicker" class="datepicker-popup" style="position:fixed"></div>
+
+
+<!-- ── AI SETTINGS MODAL ── -->
+<div class="mo" id="aiSettingsModal" onclick="if(event.target===this)closeModal('aiSettingsModal')">
+  <div class="mod" style="width:min(440px,95vw)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <div class="mod-t" style="margin:0">AI秘書 — 設定</div>
+      <button class="btn btn-icon" onclick="closeModal('aiSettingsModal')" style="opacity:.5">✕</button>
+    </div>
+    <div class="fl">
+      <label class="flb">Claude API キー <span style="color:var(--red)">*</span></label>
+      <input class="fi" type="password" id="aiApiKey" placeholder="sk-ant-api03-…" autocomplete="off">
+    </div>
+    <div style="font-size:11px;color:var(--txd);line-height:1.7;margin:-6px 0 14px">
+      <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--c)">console.anthropic.com</a> で取得。キーはローカルにのみ保存されます。
+    </div>
+    <div class="fl">
+      <label class="flb">AIの呼び名（任意）</label>
+      <input class="fi" id="aiNameInput" placeholder="例: アリア、アシスタント…" maxlength="20">
+    </div>
+    <div class="fl">
+      <label class="flb">追加の指示（任意）</label>
+      <textarea class="fi" id="aiSysExtra" rows="3" placeholder="例: タメ口で話して。返答は100字以内に。英語で返答して。"></textarea>
+    </div>
+    <div class="fl2">
+      <div class="fl">
+        <label class="flb">レポート送信先メール</label>
+        <input class="fi" type="email" id="aiReportEmail" placeholder="your@email.com">
+      </div>
+    </div>
+    <div id="aiTestResult" style="min-height:18px;font-size:11px;color:var(--txd);margin-bottom:8px"></div>
+    <div class="mod-foot">
+      <button class="btn" onclick="aiTestConn()">接続テスト</button>
+      <button class="btn" onclick="closeModal('aiSettingsModal')">キャンセル</button>
+      <button class="btn btn-p" onclick="aiSaveSettings()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── EMAIL DRAFT MODAL ── -->
+<div class="mo" id="aiEmailModal" onclick="if(event.target===this)closeModal('aiEmailModal')">
+  <div class="mod ai-email-modal" style="width:min(580px,95vw)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="mod-t" style="margin:0">メールレポート</div>
+      <button class="btn btn-icon" onclick="closeModal('aiEmailModal')" style="opacity:.5">✕</button>
+    </div>
+    <div class="fl2">
+      <div class="fl">
+        <label class="flb">宛先</label>
+        <input class="fi" id="emailTo" type="email" placeholder="送信先メールアドレス">
+      </div>
+      <div class="fl">
+        <label class="flb">件名</label>
+        <input class="fi" id="emailSubject">
+      </div>
+    </div>
+    <div class="fl">
+      <label class="flb">本文</label>
+      <textarea class="fi" id="emailBody" rows="10"></textarea>
+    </div>
+    <div class="mod-foot">
+      <button class="btn" onclick="aiCopyEmail()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        コピー
+      </button>
+      <button class="btn btn-p" onclick="aiOpenMailto()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        メールアプリで開く
+      </button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
