@@ -666,7 +666,7 @@ body.edit-on .ph{cursor:grab}
   </div>
   <div class="tb-sep"></div>
   <div class="tb-date" id="tbDate"></div>
-  <div class="edit-btn" onclick="openSupabaseModal()" id="sbBtn" style="gap:5px">☁ 同期</div>
+  <div class="edit-btn" onclick="openSupabaseModal()" id="sbBtn" style="gap:5px;border-color:rgba(0,240,212,.4);color:var(--c)">☁ 同期</div>
   <div class="edit-btn" onclick="openDataModal()" style="gap:5px">💾 データ管理</div>
   <div class="edit-btn" id="editBtn" onclick="toggleEdit()">⊞ レイアウト編集</div>
   <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txd)"><div class="sdot"></div>オンライン</div>
@@ -3597,17 +3597,17 @@ function deleteRemindDirect(id) {
 
 // INIT
 // ══════════════════════════════════════════
-rebuildProjSelect();
-renderGoals();
-renderTasks();
-renderProjList();
-renderQL();
-initMemo();
-initSoundControl();
-loadLayout();
-loadPanelCollapse();
-renderReminds();
-SB.init(); // Start Supabase sync if configured
+try { rebuildProjSelect(); } catch(e) { console.warn('rebuildProjSelect:', e); }
+try { renderGoals(); } catch(e) { console.warn('renderGoals:', e); }
+try { renderTasks(); } catch(e) { console.warn('renderTasks:', e); }
+try { renderProjList(); } catch(e) { console.warn('renderProjList:', e); }
+try { renderQL(); } catch(e) { console.warn('renderQL:', e); }
+try { initMemo(); } catch(e) { console.warn('initMemo:', e); }
+try { initSoundControl(); } catch(e) { console.warn('initSoundControl:', e); }
+try { loadLayout(); } catch(e) { console.warn('loadLayout:', e); }
+try { loadPanelCollapse(); } catch(e) { console.warn('loadPanelCollapse:', e); }
+try { renderReminds(); } catch(e) { console.warn('renderReminds:', e); }
+try { SB.init(); } catch(e) { console.warn('SB.init:', e); }
 window.addEventListener('resize',()=>{
   if($('projGanttView').style.display!=='none') renderGantt();
 });
@@ -3892,18 +3892,22 @@ function hydrateAll() {
 
 // ── Supabase Modal UI ──
 function openSupabaseModal() {
-  const c = ls.get('cy3_supabase') || {};
-  $('sbUrl').value = c.url || '';
-  $('sbKey').value = c.key || '';
-  $('sbSyncControls').style.display = c.url ? '' : 'none';
-  if(c.url) {
-    setSbStatusModal(`✅ 接続済み（UID: ${c.uid?.slice(0,12)}…）`, 'var(--grn)');
-    const ls2 = ls.get('cy3_last_sync');
-    if($('sbLastSync') && ls2) $('sbLastSync').textContent = '最終同期: ' + ls2;
-  } else {
-    setSbStatusModal('', '');
-  }
-  $('supabaseModal').classList.add('open');
+  try {
+    const c = ls.get('cy3_supabase') || {};
+    if($('sbUrl')) $('sbUrl').value = c.url || '';
+    if($('sbKey')) $('sbKey').value = c.key || '';
+    if($('sbSyncControls')) $('sbSyncControls').style.display = c.url ? '' : 'none';
+    if(c.url) {
+      setSbStatusModal('✅ 接続済み', 'var(--grn)');
+      const last = ls.get('cy3_last_sync');
+      if($('sbLastSync') && last) $('sbLastSync').textContent = '最終同期: ' + last;
+    } else {
+      setSbStatusModal('', '');
+    }
+  } catch(e) { console.warn('openSupabaseModal error:', e); }
+  // 必ずモーダルを開く
+  const modal = document.getElementById('supabaseModal');
+  if(modal) modal.classList.add('open');
 }
 
 function setSbStatusModal(msg, color) {
@@ -3957,8 +3961,7 @@ async function syncFromCloud() {
 }
 
 function confirmDisconnect() {
-  if(!confirm('Supabase接続を解除しますか？
-ローカルデータは消えません。')) return;
+  if(!confirm('Supabase接続を解除しますか？\nローカルデータは消えません。')) return;
   ls.set('cy3_supabase', {});
   $('sbSyncControls').style.display = 'none';
   setSbStatusModal('接続解除しました', 'var(--txd)');
