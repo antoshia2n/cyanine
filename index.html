@@ -10,28 +10,28 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root {
-  --c:  #00f0d4;
-  --cd: rgba(0,240,212,.12);
-  --cg: rgba(0,240,212,.4);
-  --bg: #060a0f; --bg2:rgba(10,16,26,0.82); --bg3:rgba(15,22,35,0.7); --bg4:rgba(22,32,48,0.8); --bg5:rgba(28,40,60,0.9);
-  --bo:  rgba(0,240,212,.12);
-  --bob: rgba(0,240,212,.32);
-  --tx:  #e4f0ff; --txd:rgba(228,240,255,.38); --txm:rgba(228,240,255,.65);
-  --red:#ff5580; --redd:rgba(255,85,128,.13);
-  --ylw:#ffd97d; --ylwd:rgba(255,217,125,.13);
-  --grn:#00e599; --grnd:rgba(0,229,153,.13);
-  --pur:#b89eff; --purd:rgba(184,158,255,.13);
-  --org:#ff9f50; --orgd:rgba(255,159,80,.13);
+  --c:  #00e8cc;
+  --cd: rgba(0,232,204,.15);
+  --cg: rgba(0,232,204,.45);
+  --bg: #0b1120; --bg2:rgba(14,22,38,0.88); --bg3:rgba(18,28,48,0.75); --bg4:rgba(24,36,58,0.85); --bg5:rgba(32,46,72,0.92);
+  --bo:  rgba(0,232,204,.16);
+  --bob: rgba(0,232,204,.38);
+  --tx:  #eef4ff; --txd:rgba(238,244,255,.42); --txm:rgba(238,244,255,.70);
+  --red:#ff4f7b; --redd:rgba(255,79,123,.15);
+  --ylw:#ffd060; --ylwd:rgba(255,208,96,.15);
+  --grn:#00e07a; --grnd:rgba(0,224,122,.15);
+  --pur:#b08fff; --purd:rgba(176,143,255,.15);
+  --org:#ff9a3c; --orgd:rgba(255,154,60,.15);
   --fd:'Syne',sans-serif; --fb:'Noto Sans JP',sans-serif; --fm:'JetBrains Mono',monospace;
   --r:14px; --g:12px;
-  --glass-bg: rgba(10,16,26,0.72);
-  --glass-border: rgba(0,240,212,0.14);
-  --glass-hover: rgba(0,240,212,0.22);
-  --shadow: 0 8px 32px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.05) inset;
+  --glass-bg: rgba(14,22,38,0.76);
+  --glass-border: rgba(0,232,204,.17);
+  --glass-hover: rgba(0,232,204,.26);
+  --shadow: 0 8px 32px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.06) inset;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-  background:#060a0f;
+  background:#0b1120;
   color:var(--tx);
   font-family:var(--fb);
   min-height:100vh;
@@ -72,23 +72,105 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
   box-shadow:0 0 12px rgba(0,240,212,0.2)}
 
 /* ── LAYOUT ── */
-.app{display:grid;grid-template-columns:52px 1fr;min-height:calc(100vh - 52px)}
-.sidebar{background:rgba(6,10,15,0.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+.app{display:grid;grid-template-columns:54px 1fr;min-height:calc(100vh - 52px)}
+.sidebar{background:rgba(10,17,30,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-right:1px solid var(--glass-border);display:flex;flex-direction:column;
-  align-items:center;padding:12px 0;gap:4px}
-.nb{width:38px;height:38px;border:none;background:transparent;border-radius:10px;color:var(--txd);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.2s;position:relative}
-.nb:hover,.nb.active{background:var(--cd);color:var(--c);box-shadow:0 0 14px rgba(0,240,212,0.25)}
-.nb .tip{position:absolute;left:calc(100% + 8px);background:rgba(15,22,35,0.95);border:1px solid var(--bob);
-  backdrop-filter:blur(12px);padding:4px 10px;border-radius:7px;font-size:10px;color:var(--tx);white-space:nowrap;
-  opacity:0;pointer-events:none;transition:.2s;font-family:var(--fb);z-index:200;
-  box-shadow:0 4px 16px rgba(0,0,0,0.4)}
-.nb:hover .tip{opacity:1}
-.nsep{width:24px;height:1px;background:var(--glass-border);margin:3px 0}
+  align-items:center;padding:10px 0 10px;gap:3px;overflow:visible;position:relative;z-index:50}
+.nb{width:38px;height:38px;border:none;background:transparent;border-radius:10px;color:rgba(238,244,255,.32);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;position:relative;flex-shrink:0}
+.nb svg{transition:inherit}
+.nb:hover{background:var(--cd);color:var(--c);box-shadow:0 0 12px rgba(0,232,204,.2)}
+.nb.active{background:linear-gradient(135deg,rgba(0,232,204,.18),rgba(0,200,180,.1));color:var(--c);box-shadow:0 0 16px rgba(0,232,204,.25),inset 0 1px 0 rgba(255,255,255,.06)}
+.nb .tip{position:absolute;left:calc(100% + 10px);background:rgba(12,20,36,0.97);border:1px solid var(--bob);
+  backdrop-filter:blur(16px);padding:5px 11px;border-radius:8px;font-size:11px;color:var(--tx);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:.18s;font-family:var(--fb);z-index:300;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5)}
+.nb:hover .tip{opacity:1;transform:translateX(2px)}
+.nsep{width:22px;height:1px;background:rgba(0,232,204,.1);margin:4px 0;flex-shrink:0}
+
+/* ── QL SIDEBAR PANEL ── */
+.ql-side-panel{
+  display:none;flex-direction:column;gap:4px;width:38px;overflow:hidden;
+}
+.ql-side-panel.open{display:flex}
+.ql-side-item{
+  width:38px;height:38px;border:none;border-radius:10px;background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:var(--txm);transition:.18s;position:relative;flex-shrink:0;
+  text-decoration:none;
+}
+.ql-side-item:hover{background:var(--cd);transform:scale(1.08)}
+.ql-side-item .tip{position:absolute;left:calc(100% + 10px);background:rgba(12,20,36,0.97);border:1px solid var(--bob);
+  backdrop-filter:blur(16px);padding:5px 11px;border-radius:8px;font-size:11px;color:var(--tx);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:.18s;font-family:var(--fb);z-index:300;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5)}
+.ql-side-item:hover .tip{opacity:1}
+.ql-side-add{color:rgba(238,244,255,.22);border:1px dashed rgba(0,232,204,.2)!important}
+.ql-side-add:hover{color:var(--c)!important;border-color:var(--c)!important}
+
+/* ── QUICK LINKS POPUP (from sidebar) ── */
+.ql-popup{
+  position:fixed;left:58px;bottom:80px;z-index:800;
+  background:rgba(8,14,24,0.97);border:1px solid var(--glass-border);
+  border-radius:14px;padding:14px;width:240px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);backdrop-filter:blur(24px);
+  display:none;flex-direction:column;gap:8px;
+  animation:fadeUp .2s ease;
+}
+.ql-popup.open{display:flex}
+.ql-popup-title{font-family:var(--fd);font-size:11px;font-weight:700;
+  color:var(--txd);letter-spacing:.06em;margin-bottom:2px}
+.ql-popup-grid{display:flex;flex-wrap:wrap;gap:5px}
+
+/* ── MANUAL DRAWER ── */
+.manual-drawer{
+  position:fixed;left:52px;top:52px;bottom:0;z-index:700;width:320px;
+  background:rgba(6,10,18,0.97);border-right:1px solid var(--glass-border);
+  backdrop-filter:blur(24px);overflow-y:auto;
+  transform:translateX(-110%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.manual-drawer.open{transform:translateX(0)}
+.manual-drawer-inner{padding:20px 18px}
+.manual-drawer-close{
+  position:sticky;top:0;z-index:10;
+  background:rgba(6,10,18,.9);border-bottom:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 18px;margin:-20px -18px 16px;backdrop-filter:blur(12px);
+}
+.manual-h1{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--c);margin-bottom:16px}
+.manual-h2{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--tx);
+  margin:20px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--glass-border)}
+.manual-item{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;color:var(--txm);line-height:1.6}
+.manual-item:last-child{border-bottom:none}
+.manual-key{flex-shrink:0;font-family:var(--fd);font-size:12px;font-weight:700;color:var(--c);width:60px}
+.manual-shortcut{
+  display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:5px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  font-family:var(--fm);font-size:10px;color:var(--txm);
+}
+
+/* ── VIEW MODE ── */
+.canvas.view-mode .panel{ display:none }
+.canvas.view-mode .panel.view-active{ display:block; grid-column:span 12 !important; animation:fadeUp .3s ease both }
+.canvas.view-mode .panel.view-active-half{ display:block; grid-column:span 6 !important; animation:fadeUp .3s ease both }
+
+/* ── PANEL RESIZE HANDLE ── */
+.panel-resize-handle{
+  position:absolute;bottom:0;right:0;width:18px;height:18px;
+  cursor:nwse-resize;z-index:10;opacity:0;transition:.2s;
+  display:flex;align-items:flex-end;justify-content:flex-end;padding:3px;
+}
+.panel-resize-handle::after{
+  content:'';display:block;width:10px;height:10px;
+  border-right:2px solid var(--c);border-bottom:2px solid var(--c);
+  border-radius:0 0 4px 0;opacity:.5;
+}
+.panel:hover .panel-resize-handle{opacity:1}
+.panel-resize-handle:hover::after,.panel-resize-handle:active::after{opacity:1}
 
 /* ── CANVAS ── */
 .canvas{padding:var(--g);overflow-y:auto;display:grid;grid-template-columns:repeat(12,1fr);
-  grid-auto-rows:min-content;gap:var(--g);align-content:start}
+  grid-auto-rows:auto;gap:var(--g);align-content:start;align-items:start}
 
 /* ── PANEL ── */
 .panel{
@@ -97,6 +179,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;
   border-radius:var(--r);
   position:relative;overflow:hidden;
   transition:border-color .25s,box-shadow .25s,transform .2s;
+  min-height:0;
   animation:fadeUp .35s ease both;
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
@@ -423,39 +506,93 @@ select.fi{appearance:none;cursor:pointer}
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
+  /* サイドバー非表示 → ボトムナビに切り替え */
   .sidebar{display:none}
   .app{grid-template-columns:1fr}
-  .canvas{grid-template-columns:1fr;padding:8px;gap:8px}
+  /* 下部ナビ */
+  .mobile-nav{display:flex}
+
+  .canvas{grid-template-columns:1fr;padding:8px;gap:8px;padding-bottom:72px}
   .s3,.s4,.s5,.s6,.s7,.s8,.s9,.s10,.s11,.s12{grid-column:span 1}
   .goals-grid{grid-template-columns:repeat(2,1fr)}
   .wl-layout{grid-template-columns:1fr}
   .wl-layout>div:last-child{display:none}
-  .topbar{padding:0 10px;gap:8px}
+
+  /* トップバー: 最小化 */
+  .topbar{padding:0 10px;gap:6px;height:46px}
   .logo sub{display:none}
   .tb-date{display:none}
   .edit-btn{display:none}
+  #sbBtn{display:none}
+
+  /* パネル内部 */
   .pomo-wrap{padding:10px 10px 6px}
   .mode-tabs{padding:0 10px 6px}
   .pomo-ctrls{padding:0 10px 8px}
-  .mod{width:96vw!important;padding:16px}
+  .pomo-svg-w{width:100px;height:100px}
+  .pomo-time{font-size:20px}
+
+  /* モーダル */
+  .mod{width:96vw!important;padding:16px;max-height:85vh}
   .fl2{grid-template-columns:1fr}
   #soundCtrl{padding:0 10px 10px}
-  .cal-week-header,.cal-time-grid,.cal-allday-row{grid-template-columns:36px repeat(7,1fr)}
-  .cal-time-label{padding-right:4px;font-size:9px}
-  .cal-event-title{font-size:10px}
-  .proj-list-view{max-height:260px}
-  .task-list{max-height:240px}
+
+  /* カレンダー */
+  .cal-week-header,.cal-time-grid,.cal-allday-row{grid-template-columns:32px repeat(7,1fr)}
+  .cal-time-label{padding-right:3px;font-size:8px}
+  .cal-event-title{font-size:9px}
+  .cal-event-time{display:none}
+  .cal-day-head .cal-num{width:22px;height:22px;font-size:12px}
+
+  /* リスト高さ */
+  .proj-list-view{max-height:none}
+  .task-list{max-height:none}
+
+  /* メモ */
   .memoEditorWrap{grid-template-columns:1fr!important}
   #memoPreview{display:none!important}
   #memoFormatBtn{display:none}
-  #ytPlayer{width:calc(100vw - 24px);right:12px;bottom:12px}
+  #memoToolbar{gap:2px;padding:6px 8px}
+  .memo-tool{padding:2px 5px;font-size:9px}
+
+  /* YouTube */
+  #ytPlayer{width:calc(100vw - 16px);right:8px;bottom:70px}
+
+  /* クイックリンクポップアップ */
+  .ql-popup{left:8px;bottom:70px;width:calc(100vw - 16px)}
+
+  /* マニュアルドロワー */
+  .manual-drawer{left:0;width:100vw}
+
+  /* フォント */
+  .ph{padding:10px 12px}
+  .pb{padding:11px}
+  .task-item,.remind-item{padding:8px 9px}
+  .proj-item .proj-header{padding:9px 10px}
 }
 @media (max-width: 480px) {
   .goals-grid{grid-template-columns:1fr}
-  .pomo-time{font-size:20px}
-  .ph{padding:9px 11px}
-  .pb{padding:11px}
+  .topbar{height:44px}
+  .logo{font-size:14px}
 }
+
+/* ── MOBILE BOTTOM NAV ── */
+.mobile-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:600;
+  background:rgba(6,10,15,0.95);border-top:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);padding:6px 4px;
+  justify-content:space-around;align-items:center;
+  height:60px;
+}
+.mn-btn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:4px 8px;border:none;background:transparent;cursor:pointer;
+  color:var(--txd);font-family:var(--fb);font-size:8px;border-radius:8px;
+  transition:.2s;flex:1;max-width:64px;
+}
+.mn-btn .mn-icon{font-size:18px;line-height:1}
+.mn-btn:hover,.mn-btn.active{color:var(--c);background:var(--cd)}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--bob);border-radius:3px}
@@ -653,6 +790,99 @@ body.edit-on .ph{cursor:grab}
 .remind-quick .qi{flex:1}
 .remind-empty{text-align:center;padding:20px;color:var(--txd);font-size:12px;line-height:2}
 
+
+/* ── IN-APP NOTIFICATIONS ── */
+#notifStack{
+  position:fixed;top:62px;right:16px;z-index:5000;
+  display:flex;flex-direction:column;gap:8px;
+  pointer-events:none;
+}
+.notif{
+  min-width:280px;max-width:340px;
+  background:rgba(10,18,32,0.96);
+  border:1px solid var(--bo);
+  border-radius:14px;padding:13px 15px;
+  box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04) inset;
+  backdrop-filter:blur(24px);
+  display:flex;align-items:flex-start;gap:11px;
+  pointer-events:all;cursor:pointer;
+  animation:notifIn .35s cubic-bezier(.34,1.56,.64,1) both;
+  transition:opacity .3s,transform .3s;
+  position:relative;overflow:hidden;
+}
+.notif.out{opacity:0;transform:translateX(20px)}
+.notif::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--notif-color,var(--c)),transparent);
+}
+.notif-icon{
+  width:30px;height:30px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  background:rgba(var(--notif-rgb,0,232,204),.15);
+  border:1px solid rgba(var(--notif-rgb,0,232,204),.25);
+}
+.notif-body{flex:1;min-width:0}
+.notif-title{font-size:12px;font-weight:700;color:var(--tx);font-family:var(--fd);line-height:1.3;margin-bottom:2px}
+.notif-msg{font-size:11px;color:var(--txm);line-height:1.5}
+.notif-close{
+  width:18px;height:18px;border:none;background:transparent;color:var(--txd);
+  cursor:pointer;font-size:12px;border-radius:5px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:.15s;
+}
+.notif-close:hover{background:rgba(255,255,255,.08);color:var(--tx)}
+.notif-progress{
+  position:absolute;bottom:0;left:0;height:2px;
+  background:rgba(var(--notif-rgb,0,232,204),.35);
+  transition:width linear;
+}
+.notif-task{--notif-color:var(--c);--notif-rgb:0,232,204}
+.notif-urgent{--notif-color:var(--red);--notif-rgb:255,79,123}
+.notif-pomo{--notif-color:var(--ylw);--notif-rgb:255,208,96}
+.notif-habit{--notif-color:var(--grn);--notif-rgb:0,224,122}
+@keyframes notifIn{
+  from{opacity:0;transform:translateX(30px) scale(.96)}
+  to{opacity:1;transform:translateX(0) scale(1)}
+}
+
+/* ── MEMO FOLDER TREE ── */
+.memo-folder{display:flex;flex-direction:column}
+.memo-folder-head{
+  display:flex;align-items:center;gap:5px;padding:4px 6px;border-radius:7px;
+  cursor:pointer;font-size:11px;color:var(--txm);transition:.15s;
+  font-family:var(--fd);font-weight:700;letter-spacing:.02em;user-select:none;
+}
+.memo-folder-head:hover{background:var(--cd);color:var(--tx)}
+.memo-folder-head.active{color:var(--c)}
+.memo-folder-arrow{font-size:9px;color:var(--txd);transition:transform .18s;flex-shrink:0}
+.memo-folder.open>.memo-folder-head>.memo-folder-arrow{transform:rotate(90deg)}
+.memo-folder-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.memo-folder-children{display:none;flex-direction:column;gap:1px;padding-left:12px}
+.memo-folder.open>.memo-folder-children{display:flex}
+.memo-folder-actions{display:none;gap:2px;flex-shrink:0}
+.memo-folder-head:hover .memo-folder-actions{display:flex}
+.mfa-btn{width:16px;height:16px;border:none;background:transparent;color:var(--txd);
+  cursor:pointer;font-size:10px;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:.15s}
+.mfa-btn:hover{background:rgba(255,255,255,.1);color:var(--tx)}
+.memo-page-btn{
+  display:flex;align-items:center;gap:5px;padding:5px 6px;border-radius:7px;
+  cursor:pointer;font-size:11px;color:var(--txm);transition:.15s;background:transparent;
+  border:none;width:100%;text-align:left;
+}
+.memo-page-btn:hover{background:var(--cd);color:var(--tx)}
+.memo-page-btn.active{background:linear-gradient(90deg,var(--cd),transparent);color:var(--c);font-weight:600}
+.memo-page-btn .mpn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+.memo-page-del{opacity:0;width:14px;height:14px;border:none;background:transparent;
+  color:var(--txd);cursor:pointer;font-size:10px;padding:0;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;border-radius:3px;transition:.15s}
+.memo-page-btn:hover .memo-page-del{opacity:.7}
+.memo-page-del:hover{color:var(--red);opacity:1!important;background:var(--redd)}
+.memo-add-page-btn{
+  display:flex;align-items:center;gap:5px;padding:4px 6px;border-radius:6px;
+  cursor:pointer;font-size:10px;color:var(--txd);background:transparent;border:none;
+  width:100%;transition:.15s;border:1px dashed transparent;
+}
+.memo-add-page-btn:hover{color:var(--c);border-color:rgba(0,232,204,.2);background:var(--cd)}
+
 </style>
 </head>
 <body>
@@ -675,20 +905,85 @@ body.edit-on .ph{cursor:grab}
 </header>
 
 <div class="app">
-  <nav class="sidebar">
-    <button class="nb active">⊞<span class="tip">ダッシュボード</span></button>
-    <button class="nb">📅<span class="tip">カレンダー</span></button>
-    <button class="nb">✅<span class="tip">タスク</span></button>
-    <button class="nb">📊<span class="tip">プロジェクト</span></button>
+  <nav class="sidebar" id="sidebarEl">
+    <button class="nb active" onclick="setView('all',this)" data-view="all"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span class="tip">すべて表示</span></button>
     <div class="nsep"></div>
-    <button class="nb">⏱<span class="tip">ポモドーロ</span></button>
-    <button class="nb">📈<span class="tip">作業ログ</span></button>
+    <button class="nb" onclick="setView('goals',this)" data-view="goals"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="tip">目標</span></button>
+    <button class="nb" onclick="setView('tasks',this)" data-view="tasks"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="tip">タスク</span></button>
+    <button class="nb" onclick="setView('proj',this)" data-view="proj"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="11" rx="1"/><rect x="10" y="3" width="5" height="7" rx="1"/><rect x="17" y="3" width="4" height="14" rx="1"/></svg><span class="tip">プロジェクト</span></button>
+    <button class="nb" onclick="setView('cal',this)" data-view="cal"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg><span class="tip">カレンダー</span></button>
     <div class="nsep"></div>
-    <button class="nb" onclick="toggleYtPlayer()" title="YouTube ミニプレイヤー">▶<span class="tip">YouTube</span></button>
+    <button class="nb" onclick="setView('pomo',this)" data-view="pomo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="tip">ポモドーロ</span></button>
+    <button class="nb" onclick="setView('log',this)" data-view="log"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="tip">作業ログ</span></button>
+    <button class="nb" onclick="setView('remind',this)" data-view="remind"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="tip">リマインド</span></button>
+    <button class="nb" onclick="setView('memo',this)" data-view="memo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="tip">メモ</span></button>
+    <button class="nb" onclick="setView('yt',this)" data-view="yt"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg><span class="tip">YouTube</span></button>
     <div class="nsep"></div>
-    <button class="nb" style="margin-top:auto" onclick="openDataModal()">💾<span class="tip">データ管理</span></button>
-    <button class="nb" onclick="openSupabaseModal()">☁<span class="tip">Supabase設定</span></button>
+    <!-- QUICK LINKS inline in sidebar -->
+    <button class="nb" id="qlSideBtn" onclick="toggleQLSidebar()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span class="tip">クイックリンク</span></button>
+    <div id="qlSidePanel" class="ql-side-panel"></div>
+    <div class="nsep" style="margin-top:auto"></div>
+    <button class="nb" onclick="toggleManual()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span class="tip">マニュアル</span></button>
+    <button class="nb" onclick="openDataModal()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span class="tip">データ管理</span></button>
+    <button class="nb" onclick="openSupabaseModal()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg><span class="tip">Supabase設定</span></button>
   </nav>
+
+  <!-- QUICK LINKS POPUP -->
+  <div class="ql-popup" id="qlPopup">
+    <div class="ql-popup-title">🔗 クイックリンク</div>
+    <div class="ql-popup-grid" id="qlPopupGrid"></div>
+    <button class="btn btn-sm" style="margin-top:8px;width:100%;justify-content:center" onclick="openQLModal();closeQLPopup()">＋ 追加・編集</button>
+  </div>
+
+  <!-- MANUAL DRAWER -->
+  <div class="manual-drawer" id="manualDrawer">
+    <div class="manual-drawer-close">
+      <span style="font-family:var(--fd);font-size:13px;font-weight:800;color:var(--c)">📖 マニュアル</span>
+      <button class="btn btn-sm" onclick="toggleManual()">✕ 閉じる</button>
+    </div>
+    <div class="manual-drawer-inner">
+      <div class="manual-h2">🧭 ナビゲーション</div>
+      <div class="manual-item"><div class="manual-key">⊞</div>すべてのパネルを表示するダッシュボードビュー</div>
+      <div class="manual-item"><div class="manual-key">各アイコン</div>そのパネルのみを全画面表示。もう一度押すとダッシュボードに戻る</div>
+      <div class="manual-item"><div class="manual-key">🔗</div>クイックリンク一覧をポップアップ表示</div>
+      <div class="manual-item"><div class="manual-key">❓</div>このマニュアルを開く / 閉じる</div>
+
+      <div class="manual-h2">✅ タスク管理</div>
+      <div class="manual-item"><div class="manual-key">タスク名</div>クリックで編集モーダルを開く</div>
+      <div class="manual-item"><div class="manual-key">⠿ ハンドル</div>ドラッグ&ドロップで順番を並び替え</div>
+      <div class="manual-item"><div class="manual-key">☑ チェック</div>タスクを完了にする（繰り返しタスクは次回分が自動生成）</div>
+      <div class="manual-item"><div class="manual-key">▶ ボタン</div>ポモドーロタイマーでそのタスクを開始</div>
+
+      <div class="manual-h2">📊 プロジェクト</div>
+      <div class="manual-item"><div class="manual-key">1クリック</div>プロジェクトのタスク一覧を展開</div>
+      <div class="manual-item"><div class="manual-key">2クリック</div>プロジェクト詳細モーダルを開く</div>
+      <div class="manual-item"><div class="manual-key">ステータス</div>バッジをクリックでステータス変更ポップアップ</div>
+      <div class="manual-item"><div class="manual-key">📦 アーカイブ</div>ステータスポップアップからアーカイブ。紐付きタスクも非表示に</div>
+
+      <div class="manual-h2">⏱ ポモドーロ</div>
+      <div class="manual-item"><div class="manual-key">▶ 開始</div>タイマーを開始。集中/短休憩/長休憩を切り替え可能</div>
+      <div class="manual-item"><div class="manual-key">タスク連携</div>タスクの▶ボタンを押すとそのタスクをポモドーロで実行</div>
+      <div class="manual-item"><div class="manual-key">セッション</div>4回集中すると長休憩が自動提案される</div>
+
+      <div class="manual-h2">🔔 リマインド</div>
+      <div class="manual-item"><div class="manual-key">習慣</div>毎日・平日・毎週など定期的なルーティン管理</div>
+      <div class="manual-item"><div class="manual-key">緊急雑務</div>期日付きの一時的なタスク。赤ボーダーで強調</div>
+      <div class="manual-item"><div class="manual-key">🔥 ストリーク</div>習慣を連続達成した日数を記録</div>
+
+      <div class="manual-h2">☁ データ同期</div>
+      <div class="manual-item"><div class="manual-key">自動保存</div>変更から3秒後にSupabaseへ自動バックアップ</div>
+      <div class="manual-item"><div class="manual-key">手動同期</div>「☁ 同期」→「⬆ クラウドへ保存」「⬇ 読み込む」</div>
+      <div class="manual-item"><div class="manual-key">複数端末</div>同じURLとAPIキーを入力すれば別デバイスでも同期</div>
+
+      <div class="manual-h2">⌨ キーボードショートカット</div>
+      <div class="manual-item"><div class="manual-key"><span class="manual-shortcut">Esc</span></div>開いているモーダルを閉じる</div>
+      <div class="manual-item"><div class="manual-key"><span class="manual-shortcut">Enter</span></div>モーダル内の入力フィールドで保存</div>
+
+      <div class="manual-h2">📐 レイアウト</div>
+      <div class="manual-item"><div class="manual-key">パネル角</div>右下角をドラッグしてパネルの高さを自由に変更</div>
+      <div class="manual-item"><div class="manual-key">⊞ 編集</div>トップバーの「レイアウト編集」でパネルを並び替え・サイズ変更</div>
+    </div>
+  </div>
 
   <main class="canvas" id="canvas">
 
@@ -769,7 +1064,7 @@ body.edit-on .ph{cursor:grab}
 
         <!-- ログイン前 -->
         <div id="calLoginView" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:340px;gap:16px">
-          <div style="font-size:36px;opacity:.35">📅</div>
+          <div style="opacity:.25"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg></div>
           <div style="font-size:13px;color:var(--txd);text-align:center;line-height:1.8">
             Googleカレンダーをプライベートなまま表示します。<br>
             カレンダーの公開設定は<strong style="color:var(--tx)">変更不要</strong>です。
@@ -881,17 +1176,8 @@ body.edit-on .ph{cursor:grab}
       </div>
     </div>
 
-    <!-- ⑦ QUICK LINKS -->
-    <div class="panel s4" id="panel-qlinks">
-      <div class="ph">
-        <div class="pht">クイックリンク</div>
-        <div class="phd">⠿</div>
-        <div class="pha"><button class="btn btn-sm" onclick="openQLModal()">＋ 追加</button><button class="ph-collapse" onclick="togglePanel('panel-qlinks')" title="折りたたむ">▼</button></div>
-      </div>
-      <div class="pb">
-        <div class="ql-grid" id="qlGrid"></div>
-      </div>
-    </div>
+    <!-- ⑦ QUICK LINKS (moved to sidebar - qlGrid hidden for compat) -->
+    <div id="qlGrid" style="display:none"></div>
 
     <!-- ⑧ MEMO -->
     <div class="panel s12" id="panel-memo">
@@ -900,15 +1186,16 @@ body.edit-on .ph{cursor:grab}
         <div class="phd">⠿</div>
         <div class="pha">
           <button class="btn btn-sm" id="memoFormatBtn" onclick="toggleMemoFormat()" title="プレビュー切替">プレビュー</button>
-          <button class="btn btn-sm" onclick="addMemoPage()">＋ ページ</button>
+          <button class="btn btn-sm" onclick="addMemoFolder()" title="フォルダ追加">📁 フォルダ</button>
+          <button class="btn btn-sm" onclick="addMemoPage(null)" title="ページ追加">＋ ページ</button>
           <button class="btn btn-sm btn-p" onclick="saveMemo()">保存</button>
           <button class="ph-collapse" onclick="togglePanel('panel-memo')" title="折りたたむ">▼</button>
         </div>
       </div>
       <div class="pb" style="padding:0">
-        <div style="display:grid;grid-template-columns:180px 1fr;min-height:320px">
-          <!-- Sidebar: page list -->
-          <div style="border-right:1px solid var(--bo);padding:10px 8px;display:flex;flex-direction:column;gap:4px;overflow-y:auto;max-height:420px" id="memoPageList"></div>
+        <div style="display:grid;grid-template-columns:210px 1fr;min-height:360px">
+          <!-- Sidebar: folder tree -->
+          <div style="border-right:1px solid var(--bo);padding:8px 6px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;max-height:480px" id="memoPageList"></div>
           <!-- Editor + Preview -->
           <div style="display:flex;flex-direction:column;overflow:hidden">
             <!-- Toolbar -->
@@ -947,10 +1234,34 @@ body.edit-on .ph{cursor:grab}
     </div>
 
 
+    <!-- ⑩ YOUTUBE PANEL -->
+    <div class="panel s7" id="panel-yt" style="min-height:320px">
+      <div class="ph">
+        <div class="phi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <div class="pht">YouTube</div>
+        <div class="phd">⠿</div>
+        <div class="pha">
+          <button class="ph-collapse" onclick="togglePanel('panel-yt')" title="折りたたむ">▼</button>
+        </div>
+      </div>
+      <div class="pb" style="padding:0;display:flex;flex-direction:column">
+        <div style="display:flex;gap:6px;padding:10px 14px;background:rgba(0,0,0,.2);border-bottom:1px solid var(--glass-border)">
+          <input class="yt-url-input" id="ytPanelUrl" placeholder="YouTube URL または動画ID を入力…" style="flex:1;background:rgba(15,22,35,.8);border:1px solid var(--glass-border);border-radius:8px;padding:7px 10px;color:var(--tx);font-size:11px;font-family:var(--fb);outline:none;transition:.2s" onkeydown="if(event.key==='Enter')loadYtPanel()" onfocus="this.style.borderColor='var(--c)'" onblur="this.style.borderColor='var(--glass-border)'">
+          <button class="btn btn-p btn-sm" onclick="loadYtPanel()">▶ 再生</button>
+        </div>
+        <div id="ytPanelEmbed" style="flex:1;display:flex;align-items:center;justify-content:center;min-height:240px">
+          <div style="text-align:center;color:var(--txd)">
+            <div style="font-size:40px;margin-bottom:10px;opacity:.3">▶</div>
+            <div style="font-size:12px">URLを入力して再生</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ⑨ REMIND PANEL -->
     <div class="panel s4" id="panel-remind">
       <div class="ph">
-        <div class="phi">🔔</div>
+        <div class="phi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
         <div class="pht">リマインド</div>
         <div class="phd">⠿</div>
         <div class="pha">
@@ -974,6 +1285,21 @@ body.edit-on .ph{cursor:grab}
 
   </main>
 </div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mn-btn active" onclick="setView('all',this)" data-view="all">
+    <div class="mn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>ホーム</button>
+  <button class="mn-btn" onclick="setView('tasks',this)" data-view="tasks">
+    <div class="mn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>タスク</button>
+  <button class="mn-btn" onclick="setView('proj',this)" data-view="proj">
+    <div class="mn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="11" rx="1"/><rect x="10" y="3" width="5" height="7" rx="1"/><rect x="17" y="3" width="4" height="14" rx="1"/></svg></div>PJ</button>
+  <button class="mn-btn" onclick="setView('pomo',this)" data-view="pomo">
+    <div class="mn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>タイマー</button>
+  <button class="mn-btn" onclick="toggleQLSidebar()">
+    <div class="mn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>リンク</button>
+</nav>
+<div id="notifStack"></div>
 
 <!-- MODAL: Task Edit -->
 <div class="mo" id="taskModal" onclick="if(event.target===this)closeModal('taskModal')">
@@ -1787,7 +2113,7 @@ function togglePomo() {
           playBell('break');   // 🔔 休憩終了ベル
         }
         savePomoState();
-        toast(pm==='focus'?'🎉 ポモドーロ完了！休憩しましょう':'⏱ 休憩終了！集中を再開');
+        toast(pm==='focus'?'ポモドーロ完了！休憩しましょう':'休憩終了！集中を再開'); try{NOTIF.pomoEnd(pm);}catch(e){}
         renderPomo();
       }
     },1000);
@@ -2324,7 +2650,7 @@ function quickAdd() {
   inp.focus();
   saveTasks(); renderTasks(); toast('タスクを追加しました ✅');
 }
-function saveTasks() { ls.set('cy3_tasks',{tasks,nextId:nextTaskId}); }
+function saveTasks() { ls.set('cy3_tasks',{tasks,nextId:nextTaskId}); try{NOTIF&&NOTIF.start&&setTimeout(()=>{},0);}catch(e){} }
 
 // ── Task Modal ──
 let editingTaskId = null;
@@ -3595,6 +3921,519 @@ function deleteRemindDirect(id) {
   toast('リマインドを削除しました 🗑');
 }
 
+
+// ══════════════════════════════════════════
+// VIEW MODE (sidebar panel focus)
+// ══════════════════════════════════════════
+const VIEW_PANELS = {
+  goals:  ['panel-goals'],
+  tasks:  ['panel-tasks'],
+  proj:   ['panel-proj'],
+  cal:    ['panel-cal'],
+  pomo:   ['panel-pomo'],
+  log:    ['panel-log'],
+  remind: ['panel-remind'],
+  memo:   ['panel-memo'],
+  yt:     ['panel-yt'],
+};
+let currentView = 'all';
+
+function setView(view, btn) {
+  // toggle: same view again → back to all
+  if(currentView === view && view !== 'all') view = 'all';
+  currentView = view;
+
+  const canvas = $('canvas');
+  const allPanels = document.querySelectorAll('.panel');
+
+  if(view === 'all') {
+    canvas.classList.remove('view-mode');
+    allPanels.forEach(p => { p.classList.remove('view-active','view-active-half'); });
+  } else {
+    canvas.classList.add('view-mode');
+    allPanels.forEach(p => { p.classList.remove('view-active','view-active-half'); });
+    const targets = VIEW_PANELS[view] || [];
+    targets.forEach(id => {
+      const el = $(id); if(el) el.classList.add('view-active');
+    });
+  }
+
+  // Update sidebar active state
+  document.querySelectorAll('.nb[data-view]').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else {
+    const b = document.querySelector(`.nb[data-view="${view}"]`);
+    if(b) b.classList.add('active');
+  }
+
+  // Update mobile nav active
+  document.querySelectorAll('.mn-btn[data-view]').forEach(b => b.classList.remove('active'));
+  const mb = document.querySelector(`.mn-btn[data-view="${view}"]`);
+  if(mb) mb.classList.add('active');
+
+  // Special: YT panel → also load panel if first time
+  if(view === 'yt') { setTimeout(()=>$('ytPanelUrl')?.focus(), 300); }
+
+  ls.set('cy3_view', view);
+}
+
+// ══════════════════════════════════════════
+// QUICK LINKS POPUP (sidebar)
+// ══════════════════════════════════════════
+let _qlPopupOpen = false;
+
+function renderQLPopup() {
+  const grid = $('qlPopupGrid'); if(!grid) return;
+  grid.innerHTML = quickLinks.map(q => `
+    <a href="${q.url||'#'}" target="_blank" class="qlb"
+       style="border-color:${q.color}33;text-decoration:none;flex-direction:column;gap:2px;min-width:64px;max-width:72px;padding:8px 4px;text-align:center;font-size:10px"
+       title="${q.name}">
+      <span style="font-size:18px">${q.icon}</span>
+      <span style="color:var(--txm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%">${q.name}</span>
+    </a>`).join('') + `<div class="qlb" onclick="openQLModal();closeQLPopup()"
+      style="flex-direction:column;gap:2px;min-width:64px;max-width:72px;padding:8px 4px;
+      text-align:center;font-size:10px;color:var(--txd)">
+      <span style="font-size:18px">＋</span><span>追加</span></div>`;
+}
+
+function toggleQLPopup(e) {
+  if(e) e.stopPropagation();
+  const popup = $('qlPopup'); if(!popup) return;
+  _qlPopupOpen = !_qlPopupOpen;
+  if(_qlPopupOpen) {
+    renderQLPopup();
+    popup.classList.add('open');
+    setTimeout(() => document.addEventListener('click', closeQLPopup, {once:true}), 0);
+  } else {
+    popup.classList.remove('open');
+  }
+}
+function closeQLPopup() {
+  $('qlPopup')?.classList.remove('open');
+  _qlPopupOpen = false;
+}
+
+// Patch renderQL to also refresh popup
+const _origRenderQL = typeof renderQL === 'function' ? renderQL : ()=>{};
+renderQL = function() { try{ _origRenderQL(); }catch(e){} try{ renderQLPopup(); }catch(e){} };
+
+// ══════════════════════════════════════════
+// MANUAL DRAWER
+// ══════════════════════════════════════════
+let _manualOpen = false;
+function toggleManual() {
+  _manualOpen = !_manualOpen;
+  $('manualDrawer')?.classList.toggle('open', _manualOpen);
+}
+
+// ══════════════════════════════════════════
+// YOUTUBE PANEL (in canvas)
+// ══════════════════════════════════════════
+function loadYtPanel() {
+  const raw = $('ytPanelUrl')?.value.trim(); if(!raw) return;
+  const videoId = extractYtId(raw);
+  if(!videoId) { toast('⚠ YouTube URLの形式が正しくありません'); return; }
+  const wrap = $('ytPanelEmbed'); if(!wrap) return;
+  wrap.innerHTML = `<iframe
+    src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
+    style="width:100%;height:100%;min-height:300px;border:none"
+    allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
+    allowfullscreen></iframe>`;
+}
+
+// ══════════════════════════════════════════
+// PANEL FREE RESIZE (drag bottom-right corner)
+// ══════════════════════════════════════════
+function initPanelResize() {
+  document.querySelectorAll('.panel').forEach(panel => {
+    // Only add handle if not already there
+    if(panel.querySelector('.panel-resize-handle')) return;
+    const handle = document.createElement('div');
+    handle.className = 'panel-resize-handle';
+    handle.title = 'ドラッグしてサイズ変更';
+    panel.appendChild(handle);
+
+    let startY, startH;
+    handle.addEventListener('mousedown', e => {
+      e.preventDefault(); e.stopPropagation();
+      startY = e.clientY;
+      startH = panel.getBoundingClientRect().height;
+      document.body.style.cursor = 'nwse-resize';
+      document.body.style.userSelect = 'none';
+
+      function onMove(e) {
+        const newH = Math.max(120, startH + (e.clientY - startY));
+        panel.style.height = newH + 'px';
+      }
+      function onUp() {
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        savePanelSizes();
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+
+    // Touch support
+    handle.addEventListener('touchstart', e => {
+      e.preventDefault();
+      const t = e.touches[0];
+      startY = t.clientY;
+      startH = panel.getBoundingClientRect().height;
+      function onMove(e) {
+        const newH = Math.max(120, startH + (e.touches[0].clientY - startY));
+        panel.style.height = newH + 'px';
+      }
+      function onEnd() {
+        handle.removeEventListener('touchmove', onMove);
+        handle.removeEventListener('touchend', onEnd);
+        savePanelSizes();
+      }
+      handle.addEventListener('touchmove', onMove, {passive:false});
+      handle.addEventListener('touchend', onEnd);
+    }, {passive:false});
+  });
+}
+
+function savePanelSizes() {
+  const sizes = {};
+  document.querySelectorAll('.panel[id]').forEach(p => {
+    if(p.style.height) sizes[p.id] = p.style.height;
+  });
+  ls.set('cy3_panel_heights', sizes);
+}
+
+function loadPanelSizes() {
+  const sizes = ls.get('cy3_panel_heights') || {};
+  Object.entries(sizes).forEach(([id, h]) => {
+    const el = $(id); if(el) el.style.height = h;
+  });
+}
+
+
+// ══════════════════════════════════════════
+// SIDEBAR QUICK LINKS (inline in sidebar)
+// ══════════════════════════════════════════
+let _qlSideOpen = false;
+
+function renderQLSidebar() {
+  const panel = $('qlSidePanel'); if(!panel) return;
+  panel.innerHTML = quickLinks.map(q => `
+    <a href="${q.url||'#'}" target="_blank" class="ql-side-item" title="${q.name}">
+      <span>${q.icon}</span>
+      <span class="tip">${q.name}</span>
+    </a>`).join('') +
+    `<button class="ql-side-item ql-side-add" onclick="openQLModal()" title="追加・編集">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span class="tip">追加・編集</span>
+    </button>`;
+}
+
+function toggleQLSidebar() {
+  _qlSideOpen = !_qlSideOpen;
+  const panel = $('qlSidePanel');
+  const btn = $('qlSideBtn');
+  if(!panel) return;
+  panel.classList.toggle('open', _qlSideOpen);
+  if(btn) btn.classList.toggle('active', _qlSideOpen);
+  if(_qlSideOpen) renderQLSidebar();
+}
+
+// patch renderQL to also refresh sidebar
+const _qlOrigRender = typeof renderQL === 'function' ? renderQL : ()=>{};
+renderQL = function() { try{_qlOrigRender();}catch(e){} try{renderQLSidebar();}catch(e){} };
+
+// ══════════════════════════════════════════
+// IN-APP NOTIFICATION ENGINE
+// ══════════════════════════════════════════
+const NOTIF = (() => {
+  let _queue = [];
+  let _shown = new Set(); // "taskId-date" keys to avoid repeats
+
+  function push({ title, msg, type='task', icon='🔔', duration=6000, onClick }) {
+    const stack = $('notifStack'); if(!stack) return;
+    const el = document.createElement('div');
+    el.className = `notif notif-${type}`;
+    el.innerHTML = `
+      <div class="notif-icon">${icon}</div>
+      <div class="notif-body">
+        <div class="notif-title">${title}</div>
+        <div class="notif-msg">${msg}</div>
+      </div>
+      <button class="notif-close" onclick="event.stopPropagation();this.closest('.notif').remove()">✕</button>
+      <div class="notif-progress" style="width:100%;transition:width ${duration}ms linear"></div>`;
+    if(onClick) el.addEventListener('click', onClick);
+    stack.appendChild(el);
+    // Animate progress bar
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const bar = el.querySelector('.notif-progress');
+      if(bar) bar.style.width = '0%';
+    }));
+    // Auto dismiss
+    setTimeout(() => {
+      el.classList.add('out');
+      setTimeout(() => el.remove(), 350);
+    }, duration);
+    // Max 5 at once
+    const all = stack.querySelectorAll('.notif');
+    if(all.length > 5) all[0].remove();
+  }
+
+  function todayKey() {
+    return new Date().toISOString().slice(0,10);
+  }
+
+  function checkTaskDeadlines() {
+    if(typeof tasks === 'undefined') return;
+    const today = todayStr();
+    const tomorrow = (() => { const d=new Date(); d.setDate(d.getDate()+1); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
+    tasks.filter(t=>!t.done && !t.archived && t.due).forEach(t => {
+      const key = `task-${t.id}-${t.due}`;
+      if(_shown.has(key)) return;
+      if(t.due === today) {
+        _shown.add(key);
+        push({ title:'📋 今日が期限です', msg: t.name, type:'urgent', icon:'⚠', duration:8000 });
+      } else if(t.due === tomorrow) {
+        _shown.add(key);
+        push({ title:'📋 明日が期限です', msg: t.name, type:'task', icon:'📌', duration:6000 });
+      } else if(t.due < today) {
+        _shown.add(key);
+        push({ title:'⏰ 期限超過', msg: t.name, type:'urgent', icon:'🚨', duration:10000 });
+      }
+    });
+  }
+
+  function checkReminds() {
+    if(typeof reminds === 'undefined') return;
+    const today = todayStr();
+    const now = new Date();
+    reminds.filter(r=>!r.done).forEach(r => {
+      if(r.type === 'urgent' && r.deadline) {
+        const key = `remind-${r.id}-${r.deadline}`;
+        if(_shown.has(key)) return;
+        if(r.deadline === today) {
+          _shown.add(key);
+          push({ title:'🔔 今日が締め切り', msg: r.name, type:'urgent', icon:'🚨', duration:8000 });
+        } else if(r.deadline < today) {
+          _shown.add(key);
+          push({ title:'⚠ 期限超過', msg: r.name, type:'urgent', icon:'❗', duration:10000 });
+        }
+      }
+      if(r.type === 'habit') {
+        // Remind about habits not yet done today at 9am and 5pm
+        const h = now.getHours();
+        if((h === 9 || h === 17) && !r.done) {
+          const key = `habit-${r.id}-${today}-${h}`;
+          if(_shown.has(key)) return;
+          _shown.add(key);
+          push({ title:'🌱 習慣チェック', msg: r.name, type:'habit', icon:'✅', duration:6000 });
+        }
+      }
+    });
+  }
+
+  function checkPomo() {
+    // Called by pomo engine when session ends (see pomo section)
+  }
+
+  // Public push for pomo
+  function pomoEnd(type) {
+    if(type === 'focus') push({ title:'⏱ フォーカス完了！', msg:'お疲れさまでした。休憩しましょう。', type:'pomo', icon:'☕', duration:8000 });
+    else push({ title:'⏱ 休憩終了', msg:'集中モードを開始します。', type:'task', icon:'🎯', duration:5000 });
+  }
+
+  // Run checks on load + periodically
+  function start() {
+    setTimeout(() => { checkTaskDeadlines(); checkReminds(); }, 2500);
+    setInterval(() => { checkTaskDeadlines(); checkReminds(); }, 5 * 60 * 1000); // every 5 min
+  }
+
+  return { push, start, pomoEnd };
+})();
+
+// ══════════════════════════════════════════
+// MEMO FOLDER ENGINE (3-level tree)
+// ══════════════════════════════════════════
+// Data structure:
+// memoFolders: [{id, name, open, parentId, children:[ids]}]
+// memoPages: [{id, title, content, folderId}]
+
+// Migrate old memoPages (no folderId) → add root folderId
+(function migrateMemo() {
+  try {
+    const saved = ls.get('cy3_memo_v2');
+    if(saved) {
+      if(saved.folders) { window._memoFolders = saved.folders; }
+      if(saved.pages)   { window._memoPages2 = saved.pages; }
+      if(saved.nextId)  { window._memoNextId = saved.nextId; }
+    }
+  } catch(e){}
+})();
+
+let memoFolders = window._memoFolders || [
+  { id:'f1', name:'一般', open:true, parentId:null }
+];
+let nextFolderId = 2;
+
+// Patch memoPages to have folderId if missing
+if(typeof memoPages !== 'undefined') {
+  memoPages.forEach(p => { if(!p.folderId) p.folderId = 'f1'; });
+  if(window._memoPages2) memoPages = window._memoPages2;
+  if(window._memoNextId) nextMemoId = window._memoNextId;
+}
+
+function saveMemoState() {
+  saveCurrentMemoContent();
+  ls.set('cy3_memo_v2', { folders: memoFolders, pages: memoPages, nextId: nextMemoId });
+  // legacy compat
+  ls.set('cy3_memo', memoPages);
+}
+
+function renderMemoTree() {
+  const el = $('memoPageList'); if(!el) return;
+  el.innerHTML = '';
+  // Render folders recursively (max 3 levels)
+  function renderFolder(folder, depth) {
+    if(depth > 2) return ''; // max 3 levels (0,1,2)
+    const children = memoFolders.filter(f => f.parentId === folder.id);
+    const pages = memoPages.filter(p => p.folderId === folder.id);
+    const totalItems = children.length + pages.length;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'memo-folder' + (folder.open ? ' open' : '');
+    wrap.dataset.fid = folder.id;
+
+    // Folder head
+    const head = document.createElement('div');
+    head.className = 'memo-folder-head';
+    head.innerHTML = `
+      <span class="memo-folder-arrow">›</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="opacity:.5;flex-shrink:0"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+      <span class="memo-folder-name">${folder.name}</span>
+      <span style="font-size:9px;color:var(--txd);margin-left:2px">${totalItems}</span>
+      <div class="memo-folder-actions">
+        ${depth < 2 ? `<button class="mfa-btn" title="サブフォルダ追加" onclick="event.stopPropagation();addMemoFolder('${folder.id}')">+</button>` : ''}
+        <button class="mfa-btn" title="ページ追加" onclick="event.stopPropagation();addMemoPage('${folder.id}')">📄</button>
+        <button class="mfa-btn" title="削除" onclick="event.stopPropagation();deleteMemoFolder('${folder.id}')" style="color:var(--red)">✕</button>
+      </div>`;
+    head.addEventListener('click', () => {
+      folder.open = !folder.open;
+      wrap.classList.toggle('open', folder.open);
+      saveMemoState();
+    });
+    wrap.appendChild(head);
+
+    // Children container
+    const childrenEl = document.createElement('div');
+    childrenEl.className = 'memo-folder-children';
+
+    // Sub-folders
+    children.forEach(child => childrenEl.appendChild(renderFolder(child, depth+1)));
+
+    // Pages in this folder
+    pages.forEach(p => {
+      const btn = document.createElement('button');
+      btn.className = 'memo-page-btn' + (p.id === activeMemoId ? ' active' : '');
+      btn.innerHTML = `
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.4;flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span class="mpn">${p.title||'無題'}</span>
+        <button class="memo-page-del" onclick="event.stopPropagation();deleteMemoPage('${p.id}')" title="削除">✕</button>`;
+      btn.addEventListener('click', () => switchMemoPage(p.id));
+      childrenEl.appendChild(btn);
+    });
+
+    // Add page button inside folder
+    const addBtn = document.createElement('button');
+    addBtn.className = 'memo-add-page-btn';
+    addBtn.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ページ追加`;
+    addBtn.addEventListener('click', () => addMemoPage(folder.id));
+    childrenEl.appendChild(addBtn);
+
+    wrap.appendChild(childrenEl);
+    return wrap;
+  }
+
+  // Top-level folders
+  memoFolders.filter(f => !f.parentId).forEach(f => el.appendChild(renderFolder(f, 0)));
+
+  // Root-level pages (no folder or folder not found)
+  const orphans = memoPages.filter(p => !p.folderId || !memoFolders.find(f=>f.id===p.folderId));
+  orphans.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'memo-page-btn' + (p.id === activeMemoId ? ' active' : '');
+    btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.4;flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="mpn">${p.title||'無題'}</span><button class="memo-page-del" onclick="event.stopPropagation();deleteMemoPage('${p.id}')" title="削除">✕</button>`;
+    btn.addEventListener('click', () => switchMemoPage(p.id));
+    el.appendChild(btn);
+  });
+
+  // Global add folder/page buttons
+  const bar = document.createElement('div');
+  bar.style.cssText = 'display:flex;gap:4px;padding:6px 4px 2px;border-top:1px solid var(--bo);margin-top:4px';
+  bar.innerHTML = `
+    <button class="memo-add-page-btn" style="flex:1" onclick="addMemoFolder(null)">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> フォルダ
+    </button>
+    <button class="memo-add-page-btn" style="flex:1" onclick="addMemoPage(null)">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ページ
+    </button>`;
+  el.appendChild(bar);
+}
+
+function addMemoFolder(parentId) {
+  const name = prompt('フォルダ名を入力してください', '新しいフォルダ');
+  if(!name) return;
+  // Check depth constraint
+  if(parentId) {
+    let depth = 0, cur = parentId;
+    while(cur) { depth++; const f=memoFolders.find(x=>x.id===cur); cur=f?.parentId||null; }
+    if(depth >= 2) { toast('フォルダは3階層まで作成できます'); return; }
+  }
+  memoFolders.push({ id:'f'+Date.now(), name, open:true, parentId: parentId||null });
+  saveMemoState();
+  renderMemoTree();
+}
+
+function deleteMemoFolder(id) {
+  const pages = memoPages.filter(p => p.folderId === id);
+  const children = memoFolders.filter(f => f.parentId === id);
+  if(pages.length > 0 || children.length > 0) {
+    if(!confirm(`このフォルダには${pages.length}件のページと${children.length}件のサブフォルダがあります。すべて削除しますか？`)) return;
+    pages.forEach(p => memoPages.splice(memoPages.indexOf(p), 1));
+    children.forEach(f => deleteMemoFolder(f.id));
+  }
+  memoFolders = memoFolders.filter(f => f.id !== id);
+  if(!memoPages.find(p=>p.id===activeMemoId)) activeMemoId = memoPages[0]?.id||null;
+  saveMemoState();
+  renderMemoTree();
+}
+
+// Override renderMemoPageList to use new tree renderer
+function renderMemoPageList() { renderMemoTree(); }
+
+// Override addMemoPage to accept folderId
+const _origAddMemoPage = addMemoPage;
+addMemoPage = function(folderId) {
+  saveCurrentMemoContent();
+  const id = 'm' + Date.now();
+  // Use first folder if none specified
+  const targetFolder = folderId || memoFolders[0]?.id || null;
+  memoPages.push({id, title:'新しいページ', content:'', folderId: targetFolder});
+  activeMemoId = id;
+  loadActiveMemo();
+  renderMemoTree();
+  $('memoEditor')?.focus();
+};
+
+// Override saveMemo
+const _origSaveMemo = typeof saveMemo === 'function' ? saveMemo : ()=>{};
+saveMemo = function() {
+  saveMemoState();
+  renderMemoTree();
+  toast('メモを保存しました');
+};
+
 // INIT
 // ══════════════════════════════════════════
 try { rebuildProjSelect(); } catch(e) { console.warn('rebuildProjSelect:', e); }
@@ -3608,6 +4447,14 @@ try { loadLayout(); } catch(e) { console.warn('loadLayout:', e); }
 try { loadPanelCollapse(); } catch(e) { console.warn('loadPanelCollapse:', e); }
 try { renderReminds(); } catch(e) { console.warn('renderReminds:', e); }
 try { SB.init(); } catch(e) { console.warn('SB.init:', e); }
+try { initPanelResize(); } catch(e) { console.warn('initPanelResize:', e); }
+try { loadPanelSizes(); } catch(e) { console.warn('loadPanelSizes:', e); }
+try { renderQLPopup(); } catch(e) { console.warn('renderQLPopup:', e); }
+// Restore last view
+try { const v=ls.get('cy3_view'); if(v&&v!=='all') setView(v,null); } catch(e){}
+try { NOTIF.start(); } catch(e){ console.warn('NOTIF.start:', e); }
+try { renderQLSidebar(); } catch(e){ console.warn('renderQLSidebar:', e); }
+try { renderMemoTree(); } catch(e){ console.warn('renderMemoTree:', e); }
 window.addEventListener('resize',()=>{
   if($('projGanttView').style.display!=='none') renderGantt();
 });
